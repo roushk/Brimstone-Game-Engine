@@ -221,6 +221,7 @@
     <ClInclude Include="Source\Pathfinding.h" />
     <ClInclude Include="Source\pch.h" />
     <ClInclude Include="Source\PerformanceMetrics.h" />
+    <ClInclude Include="Source\PerlinNoise.h" />
     <ClInclude Include="Source\Physics.h" />
     <ClInclude Include="Source\PointContainment.h" />
     <ClInclude Include="Source\Random.h" />

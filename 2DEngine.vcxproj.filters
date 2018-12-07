@@ -201,6 +201,9 @@
     <ClInclude Include="Source\AStarObject.h">
       <Filter>Source Files\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Source\PerlinNoise.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\2.5D Engine.cpp">

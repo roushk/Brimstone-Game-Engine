@@ -9,21 +9,45 @@
 #include <cstdlib>
 #include <ctime>
 
-//seeds initial random value
-inline void RandomInit()
+
+class PseudoRandomNumberGenerator
 {
-  std::srand(int('SEED'));//seeding value
-  //more "truer" random
-  //std::srand(std::time(nullptr));
-}
+  const int randMax = 0x7fffffff; //32767
+  long holdRand = 0;
+public:
 
-//values are from low to high; RandomValue(0,5) returns [0,5]
-inline int RandomValue(int low, int high)
-{
-  return low + (std::rand() % (abs(low) + high + 1));
-}
+  PseudoRandomNumberGenerator(int seed = 618294512)
+  {
+    holdRand = (long)seed;
+  }
+  PseudoRandomNumberGenerator(const PseudoRandomNumberGenerator& rhs);
+  void operator=(const PseudoRandomNumberGenerator& rhs);
 
 
+  int randomInt()
+  {
+    return(((holdRand = std::abs(holdRand * 214013L + 2531011L) >> 16) & randMax));
+  }
+
+  int randomRange(int low, int high)
+  {
+    return low + (randomInt() % (abs(low) + high + 1));
+  }
+
+  //returns 0 to 1
+  double randomDouble()
+  {
+    return (double(randomInt() % 0x7fffffff) / 0x7fffffff);
+  }
+
+  //range -1 to 1 
+  double randomGaussian()
+  {
+    return (randomDouble() + randomDouble() + randomDouble()) / 3.0f;
+  }
+
+};
+extern PseudoRandomNumberGenerator PRNG;
 
 
 #endif
