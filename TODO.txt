@@ -1,0 +1,48 @@
+For 2.5D Game
+
+Link GLM
+Add ImGUI
+
+Renderer
+	lighting???
+
+GUI Class
+
+Define level load/unload using JSON
+
+Editor (2D)
+	Editor to load and edit levels
+
+Asset Manager
+Load Sprites
+Load Sounds
+Load Levels
+
+Assets
+	Sprites
+	Sounds
+	Level
+
+Have PRE-Load to display intro screens
+Had Mid load loading bar
+
+Make sure game object dtor is removing it from the to-render list
+
+take ALL code out of h files
+
+Worker
+	Update(Task/moving/transporting)
+	Inventory(maxitems vs per type)
+	isSelected(true/false)
+	home(work/resource)
+	Task(mining,woodcutting,farming,moving resources)
+
+Banished style inventory
+
+Resources
+	Wood
+	Food (fish,wheat,tomatoes)
+	Iron can turn into steel
+	Coal help turn iron into steel
+	Copper
+	

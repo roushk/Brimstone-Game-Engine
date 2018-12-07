@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Editor">
+      <UniqueIdentifier>{abd980df-180d-4ada-9057-6a2adb851a03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Main">
+      <UniqueIdentifier>{cbab63df-653f-4770-96cd-650d9e7abc3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Main\Engine">
+      <UniqueIdentifier>{083c772d-777a-4030-a572-1fe6bcce9a14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{3c89aa3f-f393-4ead-b876-5e5fbac75c37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Components">
+      <UniqueIdentifier>{fdf42f28-babb-48c9-aea9-608ac50f2396}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems">
+      <UniqueIdentifier>{b54c0b90-fbe2-48ce-9ae4-57b35f20f7e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Asset Manager">
+      <UniqueIdentifier>{14b0d330-3ded-4c66-83d9-64411b82b1a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Render">
+      <UniqueIdentifier>{8a4ba81e-721b-4c30-8421-b3893ebf0f2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools">
+      <UniqueIdentifier>{020619a5-482a-4393-bfd5-4312ac208d23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Editor\GUI">
+      <UniqueIdentifier>{4cef3d4d-0527-43f0-a6b2-b55b67e20dd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Render\Shaders">
+      <UniqueIdentifier>{88a6f2be-17aa-4b17-894c-508c711bc482}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Component Manager">
+      <UniqueIdentifier>{b25b7b2b-2cb6-4ae9-8763-dfd463b1b50b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Space Manager">
+      <UniqueIdentifier>{cc13ddff-77d7-4171-b7fc-b30e6ebc92bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Input Manager">
+      <UniqueIdentifier>{3a056e62-aa28-4706-8ae4-5f9e549610ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Dungeon Gen">
+      <UniqueIdentifier>{089b5b66-593d-458a-9e64-80a734e352c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Map">
+      <UniqueIdentifier>{df81d292-11f8-4bbc-b763-f95d6b2ed6bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\imgui">
+      <UniqueIdentifier>{0fa6d884-e814-4179-ae1c-5d767955c10e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Engine.h">
+      <Filter>Source Files\Main\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System.h">
+      <Filter>Source Files\Main\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AssetManager.h">
+      <Filter>Source Files\Systems\Asset Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Window.h">
+      <Filter>Source Files\Systems\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Render.h">
+      <Filter>Source Files\Systems\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PerformanceMetrics.h">
+      <Filter>Source Files\Main\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Remap.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Transform.h">
+      <Filter>Source Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Sprite.h">
+      <Filter>Source Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Texture.h">
+      <Filter>Source Files\Systems\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ImGuiManager.h">
+      <Filter>Source Files\Editor\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ParticleManager.h">
+      <Filter>Source Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BasicBehavior.h">
+      <Filter>Source Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collider.h">
+      <Filter>Source Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics.h">
+      <Filter>Source Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AI.h">
+      <Filter>Source Files\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ShaderLoader.h">
+      <Filter>Source Files\Systems\Render\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FileLoad.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GUI.h">
+      <Filter>Source Files\Editor\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\imgui\imconfig.h">
+      <Filter>Resource Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\imgui\imgui.h">
+      <Filter>Resource Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\imgui\imgui_impl_opengl3.h">
+      <Filter>Resource Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\imgui\imgui_impl_sdl.h">
+      <Filter>Resource Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\imgui\imgui_internal.h">
+      <Filter>Resource Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\imgui\stb_rect_pack.h">
+      <Filter>Resource Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\imgui\stb_textedit.h">
+      <Filter>Resource Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\imgui\stb_truetype.h">
+      <Filter>Resource Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentManager.h">
+      <Filter>Source Files\Systems\Component Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SpaceManager.h">
+      <Filter>Source Files\Systems\Space Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Space.h">
+      <Filter>Source Files\Systems\Space Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObjectEnum.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Level.h">
+      <Filter>Source Files\Systems\Space Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SpaceTypes.h">
+      <Filter>Source Files\Systems\Space Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Random.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InputManager.h">
+      <Filter>Source Files\Systems\Input Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InputEvent.h">
+      <Filter>Source Files\Systems\Input Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DungeonGen.h">
+      <Filter>Source Files\Tools\Dungeon Gen</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HalfPlane.h">
+      <Filter>Source Files\Tools\Dungeon Gen</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PointContainment.h">
+      <Filter>Source Files\Tools\Dungeon Gen</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Map.h">
+      <Filter>Source Files\Systems\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Pathfinding.h">
+      <Filter>Source Files\Systems\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AStarObject.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\2.5D Engine.cpp">
+      <Filter>Source Files\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine.cpp">
+      <Filter>Source Files\Main\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AssetManager.cpp">
+      <Filter>Source Files\Systems\Asset Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Window.cpp">
+      <Filter>Source Files\Systems\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Render.cpp">
+      <Filter>Source Files\Systems\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ImGuiManager.cpp">
+      <Filter>Source Files\Editor\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Transform.cpp">
+      <Filter>Source Files\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI.cpp">
+      <Filter>Source Files\Editor\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\imgui\imgui.cpp">
+      <Filter>Resource Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\imgui\imgui_demo.cpp">
+      <Filter>Resource Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\imgui\imgui_draw.cpp">
+      <Filter>Resource Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\imgui\imgui_impl_opengl3.cpp">
+      <Filter>Resource Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\imgui\imgui_impl_sdl.cpp">
+      <Filter>Resource Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SpaceManager.cpp">
+      <Filter>Source Files\Systems\Space Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Space.cpp">
+      <Filter>Source Files\Systems\Space Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Level.cpp">
+      <Filter>Source Files\Systems\Space Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InputManager.cpp">
+      <Filter>Source Files\Systems\Input Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InputEvent.cpp">
+      <Filter>Source Files\Systems\Input Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HalfPlane.cpp">
+      <Filter>Source Files\Tools\Dungeon Gen</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PointContainment.cpp">
+      <Filter>Source Files\Tools\Dungeon Gen</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DungeonGen.cpp">
+      <Filter>Source Files\Tools\Dungeon Gen</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Map.cpp">
+      <Filter>Source Files\Systems\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Pathfinding.cpp">
+      <Filter>Source Files\Systems\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AStarObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\pch.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
