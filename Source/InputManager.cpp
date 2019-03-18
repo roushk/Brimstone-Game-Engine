@@ -17,7 +17,8 @@ InputManager::InputManager() : System()
   name = "Input Manager";
   screenSize = engine.GetSystem<Render>()->screenSize;
   scaleToWorld = glm::scale(glm::vec3(
-    (engine.GetSystem<Render>()->worldScale * 2.0f) / screenSize.x, (engine.GetSystem<Render>()->worldScale * 2.0f) / screenSize.y, 1));
+    (engine.GetSystem<Render>()->worldScale) / screenSize.x, 
+    (engine.GetSystem<Render>()->worldScale) / screenSize.y, 1));
   aspect = screenSize.x / screenSize.y;
 }
 
@@ -88,7 +89,8 @@ void InputManager::Update(float dt)
       engine.GetSystem<Render>()->resize(event.window.data1, event.window.data2);
       screenSize = engine.GetSystem<Render>()->screenSize;
       scaleToWorld = glm::scale(glm::vec3(
-        (engine.GetSystem<Render>()->worldScale * 2.0f) / screenSize.x, (engine.GetSystem<Render>()->worldScale * 2.0f) / screenSize.y, 1));
+        (engine.GetSystem<Render>()->worldScale) / screenSize.x, 
+        (engine.GetSystem<Render>()->worldScale) / screenSize.y, 1));
       aspect = screenSize.x / screenSize.y;
     }
     else if (event.window.event == SDL_WINDOWEVENT_MAXIMIZED)
@@ -128,6 +130,7 @@ void InputManager::Update(float dt)
   case SDL_KEYUP:
 
     break;
+    
 /*SDL_MouseButtonEvent*/
   case SDL_MOUSEBUTTONDOWN:
   {
@@ -203,7 +206,7 @@ void InputManager::Update(float dt)
       GameObject* object = nullptr;
       for (auto &obj : engine.GetSystem<Render>()->objects)
       {
-        if (obj->layer == GameObjectLayer::golCursor)
+        if (obj->layer == GameObjectLayer::Cursor)
           continue;
         auto point = obj->GetComponent<Transform>()->GetTranslation();
         //bounding box selection
@@ -266,8 +269,9 @@ void InputManager::Update(float dt)
   case SDL_MOUSEMOTION:
   {
     //updates mouse world and mouse screen coords
-    mouseScreenCoords = glm::vec2((-screenSize.x / 2.0f + event.motion.x) * aspect, screenSize.y / 2.0f + -event.motion.y);
-
+      
+    //mouseScreenCoords = glm::vec2((-screenSize.x / 2.0f + event.motion.x) * aspect, screenSize.y / 2.0f + -event.motion.y);
+    mouseScreenCoords = glm::vec2((-screenSize.x + event.motion.x * 2.0f) * aspect, screenSize.y + -event.motion.y * 2.0f);
 
   }
     break;
@@ -303,7 +307,7 @@ void InputManager::Update(float dt)
 
     std::cout << droppedFile << std::endl;
     engine.GetSystem<AssetManager>()->LoadSingleTexture(droppedFile);
-    engine.GetSystem<Render>()->objects.front()->SetLayer(golOutOfBounds);
+    engine.GetSystem<Render>()->objects.front()->SetLayer(GameObjectLayer::OutOfBounds);
     engine.GetSystem<Render>()->objects.front()->GetComponent<Sprite>()->SetTexure(textureName);
       /*
     SDL_ShowSimpleMessageBox(

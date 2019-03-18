@@ -7,24 +7,30 @@
 #ifndef GAMEOBJECTENUM_H
 #define GAMEOBJECTENUM_H
 
-enum GameObjectLayer
+namespace GameObjectLayer
 {
-  golBackground,
-  golBackgroundEffects,
-  golFloor,
-  golFloorEffects,
-  golObstacles,
-  golObstacleEffects,
-  golEnemies,
-  golPlayers,
-  golProjectiles,
-  golGeneralEffects,
-  golHud,
-  golHudEffects,
-  golMenu,
-  golMenuEffects,
-  golCursor,
-  golOutOfBounds
-};
+ 
+  enum GameObjectLayer : unsigned
+  {
+    Background,
+    BackgroundEffects,
+    Floor,
+    FloorEffects,
+    Obstacles,
+    ObstacleEffects,
+    Enemies,
+    Players,
+    Projectiles,
+    GeneralEffects,
+    Hud,
+    HudEffects,
+    Menu,
+    MenuEffects,
+    Cursor,
+    OutOfBounds
+
+  };
+}
+
 
 #endif

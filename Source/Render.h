@@ -74,7 +74,7 @@ public:
   Window* GetWindow() { return &window; };
   bool standardUV = false;
   glm::vec2 screenSize;
-  float worldScale = 5.0f;
+  float worldScale = 10.0f;
 
   glm::vec2 cameraScale{ 1.0f, 1.0f };
   glm::vec2 cameraPos;
