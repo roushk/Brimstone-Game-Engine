@@ -22,3 +22,12 @@ bool Collider::isColliding(const Collider& rhs)
   }
   return false;
 }
+
+void Collider::resolveCollision(GameObject* obj)
+{
+  if(parent->HasComponent<UtilityAI>() && obj->HasComponent<UtilityAI>())
+  {
+    parent->GetComponent<UtilityAI>()->resolveNeed(*obj->GetComponent<UtilityAI>());
+    
+  }
+}

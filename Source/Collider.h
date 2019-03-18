@@ -9,6 +9,7 @@
 
 #include "Component.h"
 
+
 enum class ColliderType : unsigned
 {
   Player,
@@ -25,11 +26,15 @@ public:
   Collider() : Component() { ID = nextComponentID++; };
 
   bool isColliding(const Collider& rhs);
+  void resolveCollision(GameObject* obj);
 
-  float radius;
+  float radius = 0.5f;
+  static cType type = ctCollider;
 private:
   static unsigned nextComponentID;
 
 };
+
+
 
 #endif

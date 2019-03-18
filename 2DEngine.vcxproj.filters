@@ -64,6 +64,9 @@
     <Filter Include="Resource Files\imgui">
       <UniqueIdentifier>{0fa6d884-e814-4179-ae1c-5d767955c10e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems\Utility AI">
+      <UniqueIdentifier>{4e6b4522-60cc-4706-98d4-199ddec49461}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Engine.h">
@@ -201,6 +204,15 @@
     <ClInclude Include="Source\AStarObject.h">
       <Filter>Source Files\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Source\UtilityAi.h">
+      <Filter>Source Files\Systems\Utility AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Need.h">
+      <Filter>Source Files\Systems\Utility AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UtilityAiSystem.h">
+      <Filter>Source Files\Systems\Utility AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\2.5D Engine.cpp">
@@ -283,6 +295,15 @@
     </ClCompile>
     <ClCompile Include="Source\Physics.cpp">
       <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UtilityAI.cpp">
+      <Filter>Source Files\Systems\Utility AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UtilityAiSystem.cpp">
+      <Filter>Source Files\Systems\Utility AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collider.cpp">
+      <Filter>Source Files\Objects\Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

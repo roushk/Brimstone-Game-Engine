@@ -75,6 +75,9 @@ PathResult AStarPather::compute_path(PathRequest &request)
   //first time for every new request
   if(request.newRequest)
   {
+    request.path.clear();
+    request.computedPath = false;
+
     precalcMap(request.map);
     debugColoring = request.settings.debugColoring;
     rubberBanding = request.settings.rubberBanding;
@@ -89,6 +92,7 @@ PathResult AStarPather::compute_path(PathRequest &request)
     if(start == goal)
     {
       request.path.push_back(request.goal);
+      request.computedPath = true;
       return PathResult::COMPLETE;
     }
     //have to invert start coords????
@@ -184,7 +188,7 @@ PathResult AStarPather::compute_path(PathRequest &request)
       }
       request.path.push_back(request.goal);
 
-
+      request.computedPath = true;
       return PathResult::COMPLETE; 
     }
 

@@ -109,6 +109,26 @@ void Render::Update(const float dt)
   {
     obj->Update(dt);
   }
+  for (auto& obj : objects)
+  {
+    if(obj->HasComponent<Collider>())
+    {
+      for (auto& obj2 : objects)
+      {
+        if (obj->ID == obj2->ID)
+          continue;
+        if (obj2->HasComponent<Collider>())
+        {
+          if(obj->GetComponent<Collider>()->isColliding(*obj2->GetComponent<Collider>()))
+          {
+            obj->GetComponent<Collider>()->resolveCollision(obj2);
+          }
+        }
+      }
+      
+    }
+  }
+
   UNREFERENCED_PARAMETER(dt);
   
   ClearScreen();

@@ -25,13 +25,20 @@ public:
 
   GameObject& operator=(const GameObject & rhs);
 
-  virtual void Update(float dt){};
+  virtual void Update(float dt);
 
   //needs to return ptr as we don't know the size of each component
   template <class ComponentType>
   inline typename std::enable_if<std::is_base_of<Component, ComponentType>::value, 
     ComponentType*>::type GetComponent() const
   {
+    if (dynamic_cast<ComponentType*>(components[ComponentType::type].get()) == nullptr)
+    {
+      std::string throwmsg = "Component Type";
+      throwmsg += std::to_string(ComponentType::type);
+      throwmsg += "Is nullptr. Make sure object has the component added";
+      throw(throwmsg);
+    }
     return dynamic_cast<ComponentType*>(components[ComponentType::type].get());
   }
   
@@ -39,6 +46,12 @@ public:
   bool AddComponent()
   {
     return engine.GetSystem<ComponentManager>()->AddComponentFromManager<ComponentType>(this);
+  }
+
+  template <typename ComponentType>
+  bool HasComponent()
+  {
+    return dynamic_cast<ComponentType*>(components[ComponentType::type].get()) != nullptr;
   }
 
   template <typename ComponentType>

@@ -39,6 +39,7 @@ struct PathRequest
   } settings;
 
   bool newRequest = true;
+  bool computedPath = false;
 };
 
 class Node
