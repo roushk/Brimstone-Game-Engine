@@ -7,14 +7,20 @@
 #ifndef INPUT_EVENT_H
 #define INPUT_EVENT_H
 
-enum InputEvents
+enum class InputEvents
 {
-  ieMouseButtonDown,  //clicking down button
-  ieMouseButtonUp,    //clicking up button
-  ieButtonDown,       //keyboard/controller down
-  ieButtonUp,         //keyboard/controller up
-  ieMouseMovement,    //mousemovement
-  ieOutOfBounds
+  MouseButton,  //clicking button
+  ButtonDown,       //keyboard/controller down
+  ButtonUp,         //keyboard/controller up
+  MouseMovement,    //mousemovement
+  OutOfBounds
+};
+
+enum class InputMouseButtonEvents
+{
+  OnPress,
+  OnRelease,
+  OnHold
 };
 
 class InputEvent

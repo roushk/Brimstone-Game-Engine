@@ -62,9 +62,9 @@ Map::Map(std::string& file_string)
   {
     for (int j = 0; j < data[i].size(); ++j)
     {
-      data[i][j].GetComponent<Transform>()->SetScale({ 1.0f, 1.0f });
+      data[i][j].GetComponent<Transform>()->SetScale({ 0.5f, 0.5f });
       data[i][j].GetComponent<Transform>()->SetTranslation({ i, j });
-      data[i][j].SetLayer(GameObjectLayer::golFloor);
+      data[i][j].SetLayer(GameObjectLayer::Floor);
       if(data[i][j].type == mntGround)
       {
         std::string grass = "grass";
@@ -132,7 +132,7 @@ Map GenerateEmptyMap(unsigned xSize, unsigned ySize)
       grass += std::to_string(RandomValue(0, 2));
       map.data[i][j].GetComponent<Sprite>()->SetTexure(grass);
       map.data[i][j].GetComponent<Transform>()->SetTranslation({i, j});
-      map.data[i][j].SetLayer(GameObjectLayer::golFloor);
+      map.data[i][j].SetLayer(GameObjectLayer::Floor);
     }
   }
   return map;

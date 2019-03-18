@@ -48,20 +48,20 @@ public:
 
   }
   //sets up so that everything is -z
-  void SetLayer(const GameObjectLayer& layer_)
+  void SetLayer(const unsigned& layer_)
   {
     layer = layer_;
-    GetComponent<Transform>()->translation.z = -(float(layer_) / float(golOutOfBounds));
+    GetComponent<Transform>()->translation.z = -(float(layer_) / float(GameObjectLayer::OutOfBounds));
   }
   
-  int GetLayer() const
+  unsigned GetLayer() const
   {
     return layer;
   }
 
   glm::vec4 color{0,0,0,1};
   glm::vec4 tempColor{0,0,0,1};
-  int layer = golOutOfBounds;
+  unsigned layer = GameObjectLayer::OutOfBounds;
   unsigned ID;
   bool drawEdges = false;
   bool moveable = false;

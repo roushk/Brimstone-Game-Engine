@@ -90,7 +90,7 @@ glm::mat4& Transform::GetMatrix()
   {
     matrix = translate(translation) * 
       rotate(rotation, vec3{ 0,0,1 }) * 
-      glm::scale(vec3(scale / 2.0f, 1.0f));
+      glm::scale(vec3(scale, 1.0f));
     dirty = false;
   }
   return matrix;
