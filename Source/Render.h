@@ -67,7 +67,7 @@ public:
   void DrawGameObjects(const float dt);
 
   void DrawObject(GameObject& obj);
-  static const int type = stRender;
+  static const SystemTypes type = SystemTypes::Render;
 
   //TODO: REMOVE, FOR TESTING ONLY
   std::vector<GameObject*> objects;
@@ -89,8 +89,6 @@ private:
   //glm::mat4 modelTransform; //model transform is objects transform
   glm::mat4 worldToNDC = glm::mat4(1.0f);
   //no pers proj cause 2d
-
-
 
   Window window;
   GLuint programs[MAXPROGRAMS];

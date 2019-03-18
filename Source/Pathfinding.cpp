@@ -61,21 +61,13 @@ void AStarPather::precalcMap(Map* mapData)
 
 bool AStarPather::initialize()
 {
-  // handle any one-time setup requirements you have
 
-  //Callback cb = std::bind(&AStarPather::precalcMap, this);
-  //Messenger::listen_for_message(Messages::MAP_CHANGE, cb);
-  
-
-   return true; // return false if any errors actually occur, to stop engine initialization
+   return true; 
 }
 
 void AStarPather::shutdown()
 {
-  /*
-    Free any dynamically allocated memory or any other general house-
-    keeping you need to do during shutdown.
-  */
+
 }
 
 PathResult AStarPather::compute_path(PathRequest &request)
@@ -95,7 +87,10 @@ PathResult AStarPather::compute_path(PathRequest &request)
 
     //in the case that you click on yourself
     if(start == goal)
+    {
+      request.path.push_back(request.goal);
       return PathResult::COMPLETE;
+    }
     //have to invert start coords????
     /*
     if (debugColoring)
@@ -153,14 +148,11 @@ PathResult AStarPather::compute_path(PathRequest &request)
     //Path is "complete"
     if (goal.row == node.x && goal.col == node.y)
     {
-      
-      
       Node* nodePtr = &node;
       
       while(nodePtr->xParent != start.row || nodePtr->yParent != start.col)
       {
         finalList.push_front({ nodePtr->x, nodePtr->y });
-        
         
         nodePtr = &map.getNode(nodePtr->xParent, nodePtr->yParent);
       }
@@ -190,6 +182,7 @@ PathResult AStarPather::compute_path(PathRequest &request)
           request.path.push_back(request.map->get_world_position(waypoint.col, waypoint.row));
         }
       }
+      request.path.push_back(request.goal);
 
 
       return PathResult::COMPLETE; 

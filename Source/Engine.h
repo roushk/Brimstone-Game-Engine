@@ -10,15 +10,16 @@
 #include "System.h"
 
 
-enum SystemTypes
+enum class SystemTypes
 {
   //ctNone,
-  stRender,
-  stAssetManager,
-  stComponentManager,
-  stImGuiManager,
-  stInputManager,
-  stOutOfBounds
+  Render,
+  AssetManager,
+  ComponentManager,
+  ImGuiManager,
+  InputManager,
+  CollisionManager,
+  OutOfBounds
 };
 
 class Engine : public System
@@ -62,14 +63,14 @@ public:
   template <class SystemType>
   void AddSystem(System* system)
   {
-    systems[SystemType::type] = system;
+    systems[static_cast<unsigned>(SystemType::type)] = system;
   };
 
   template <class SystemType>
   inline typename std::enable_if<std::is_base_of<System, SystemType>::value,
     SystemType*>::type GetSystem()
   {
-    return dynamic_cast<SystemType*>(systems[SystemType::type]);
+    return dynamic_cast<SystemType*>(systems[static_cast<unsigned>(SystemType::type)]);
   }
 
   //free memory
@@ -79,7 +80,7 @@ public:
 private:
   //HAS to be pointer due to the System class being a pure virtual class
   //b/c it has size of 0 and pts have size of 8 
-  System* systems[stOutOfBounds];
+  System* systems[static_cast<unsigned>(SystemTypes::OutOfBounds)];
   bool isRunning = true;
 };
 

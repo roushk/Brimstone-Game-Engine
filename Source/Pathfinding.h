@@ -6,8 +6,6 @@
 
 class Map;
 
-
-
 enum ONLIST
 {
   olClosedList,
