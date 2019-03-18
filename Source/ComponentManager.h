@@ -146,7 +146,7 @@ public:
     UNREFERENCED_PARAMETER(dt);
   }
 
-  static const int type = stComponentManager;
+  static const SystemTypes type = SystemTypes::ComponentManager;
 private:
   std::vector<std::vector<Component*>> components;
   std::vector<std::deque<int>> availibleComponents;

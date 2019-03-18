@@ -59,10 +59,10 @@ public:
   bool active = false;
   std::string name = "Uninitialized Component";
   static cType type = ctOutOfBounds;
-  GameObject* parent = nullptr;
   unsigned uniqueComponentID;
 
 protected:
+  GameObject* parent = nullptr;
   static unsigned nextUniqueComponentID;
 };
 

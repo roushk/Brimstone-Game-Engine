@@ -26,7 +26,7 @@ public:
   ~InputManager() override;
 
   void Update(float dt) override;
-  static const int type = stInputManager;
+  static const SystemTypes type = SystemTypes::InputManager;
 
   
   //std::queue<InputEvent> inputEvents;

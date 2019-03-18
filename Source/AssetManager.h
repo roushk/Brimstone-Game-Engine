@@ -44,7 +44,7 @@ public:
     return texturesBasedOnIDs;
   };
 
-  static const int type = stAssetManager;
+  static const SystemTypes type = SystemTypes::AssetManager;
   
   unsigned BlankTextureID;
 

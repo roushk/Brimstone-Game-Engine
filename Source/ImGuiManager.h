@@ -75,7 +75,7 @@ public:
   };
   Window* window;
   std::vector<GUI> guis;
-  static const int type = stImGuiManager;
+  static const SystemTypes type = SystemTypes::ImGuiManager;
 
 private:
 };

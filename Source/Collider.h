@@ -9,12 +9,24 @@
 
 #include "Component.h"
 
+enum class ColliderType : unsigned
+{
+  Player,
+  Wall,
+  Floor,
+  Object,
+  
+};
+
 class Collider : public Component
 {
 public:
 
   Collider() : Component() { ID = nextComponentID++; };
 
+  bool isColliding(const Collider& rhs);
+
+  float radius;
 private:
   static unsigned nextComponentID;
 
