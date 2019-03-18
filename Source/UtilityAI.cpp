@@ -18,6 +18,10 @@ void UtilityAI::addFufillment(Need name, float fufillment_, float useTime)
 
 void UtilityAI::Update(float dt)
 {
+  //if object is moving dont do anything
+  if (reinterpret_cast<AStarObject*>(parent)->moving == true)
+    return;
+
   //TODO: should put all possible needs that should be fufilled into a queue and sort them
   Need highestPriorityNeed = Need::None;
   float highestPriorityNeedCost = 0;
@@ -34,7 +38,7 @@ void UtilityAI::Update(float dt)
     //currentCooldown can be negative, in fact will almost always be negative
 
 
-    if(need.second.currentValue < need.second.min && reinterpret_cast<AStarObject*>(parent)->moving == false
+    if(need.second.currentValue < need.second.min 
       && need.second.priority * (need.second.min - need.second.currentValue)> highestPriorityNeedCost )
     {
       //cost is time past min * a scaling factor of priority
@@ -93,6 +97,8 @@ void UtilityAI::GetClosestFufillment(Need need)
   }
 }
 
+
+
 //applys each obj need and fufillment to each other
 void UtilityAI::resolveNeed(UtilityAI& rhs)
 {
@@ -116,8 +122,14 @@ void UtilityAI::resolveNeed(UtilityAI& rhs)
   }
 }
 
+void UtilityAI::ResetJob()
+{
+  currentJob = JobData_None;
+}
+
 void UtilityAI::SetJob(JobData& job)
 {
+  currentJob = job;
   auto parentAstar = reinterpret_cast<AStarObject*>(parent);
 
   //if we already have a path we have planned dont make a new one

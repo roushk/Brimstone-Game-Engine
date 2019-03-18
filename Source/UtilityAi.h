@@ -5,6 +5,7 @@
 #include "Component.h"
 #include <map>
 #include "Need.h"
+#include "Job.h"
 
 struct JobData;
 class Map;
@@ -21,12 +22,17 @@ public:
   void GetClosestFufillment(Need need);
   void resolveNeed(UtilityAI& rhs);
   void SetJob(JobData& job);
+  void ResetJob();
   
   AStarPather* pather = nullptr;
   Map* map = nullptr;
   static cType type = ctUtilityAI;
 
   bool canWork = true;
+  bool isWorking = false;
+
+  JobData& currentJob = JobData_None;
+  float skill = 1.0f;
 
 private:
   static unsigned nextComponentID;
@@ -34,6 +40,7 @@ private:
 
   std::map<Need, NeedData> needs;
   std::map<Need, FufillmentData > fufillment;
+  //std::map<JobType, float> skill;
 };
 
 #endif
