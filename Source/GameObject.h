@@ -19,6 +19,7 @@ class GameObject
 {
   friend ComponentManager;
 public:
+  virtual ~GameObject() = default;
   //Automatically adds Sprite and Transform to GameObject
   GameObject(): ID(NextGameObjectID++) 
   { AddComponent<Sprite>(); AddComponent<Transform>(); };

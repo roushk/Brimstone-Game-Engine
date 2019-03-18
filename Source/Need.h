@@ -2,10 +2,11 @@
 
 enum class Need
 {
+  None,
   Hunger,
   Sleep,
   Work,
-  Joy
+  Joy,
 };
 
 /*
@@ -36,11 +37,15 @@ struct NeedData
 {
   float min = 0;
   float max = 1;
+
   float currentValue = 1;
   float decay = 0.001f; //on each update currentValue -= dt * speed
+  float priority = 1.0f;
+
   float setCooldown = 10.0f;
   float currentCooldown = 0.0;
 };
+
 
 struct FufillmentData
 {

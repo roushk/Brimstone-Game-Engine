@@ -25,9 +25,6 @@
     <Filter Include="Source Files\Objects">
       <UniqueIdentifier>{3c89aa3f-f393-4ead-b876-5e5fbac75c37}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Objects\Components">
-      <UniqueIdentifier>{fdf42f28-babb-48c9-aea9-608ac50f2396}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Systems">
       <UniqueIdentifier>{b54c0b90-fbe2-48ce-9ae4-57b35f20f7e3}</UniqueIdentifier>
     </Filter>
@@ -67,6 +64,18 @@
     <Filter Include="Source Files\Systems\Utility AI">
       <UniqueIdentifier>{4e6b4522-60cc-4706-98d4-199ddec49461}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Objects\AStarObject">
+      <UniqueIdentifier>{f14890e3-8875-491c-9087-930ff8e064b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Component Headers">
+      <UniqueIdentifier>{fdf42f28-babb-48c9-aea9-608ac50f2396}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Game Objects">
+      <UniqueIdentifier>{b6c76c90-5ef0-46a3-a260-74fa1f5b0663}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Game Resource">
+      <UniqueIdentifier>{292b1c3f-c199-420c-9a29-5673b757b917}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Engine.h">
@@ -93,14 +102,11 @@
     <ClInclude Include="Source\Component.h">
       <Filter>Source Files\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameObject.h">
-      <Filter>Source Files\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Transform.h">
-      <Filter>Source Files\Objects\Components</Filter>
+      <Filter>Source Files\Objects\Component Headers</Filter>
     </ClInclude>
     <ClInclude Include="Source\Sprite.h">
-      <Filter>Source Files\Objects\Components</Filter>
+      <Filter>Source Files\Objects\Component Headers</Filter>
     </ClInclude>
     <ClInclude Include="Source\Texture.h">
       <Filter>Source Files\Systems\Render</Filter>
@@ -109,19 +115,19 @@
       <Filter>Source Files\Editor\GUI</Filter>
     </ClInclude>
     <ClInclude Include="Source\ParticleManager.h">
-      <Filter>Source Files\Objects\Components</Filter>
+      <Filter>Source Files\Objects\Component Headers</Filter>
     </ClInclude>
     <ClInclude Include="Source\BasicBehavior.h">
-      <Filter>Source Files\Objects\Components</Filter>
+      <Filter>Source Files\Objects\Component Headers</Filter>
     </ClInclude>
     <ClInclude Include="Source\Collider.h">
-      <Filter>Source Files\Objects\Components</Filter>
+      <Filter>Source Files\Objects\Component Headers</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics.h">
-      <Filter>Source Files\Objects\Components</Filter>
+      <Filter>Source Files\Objects\Component Headers</Filter>
     </ClInclude>
     <ClInclude Include="Source\AI.h">
-      <Filter>Source Files\Objects\Components</Filter>
+      <Filter>Source Files\Objects\Component Headers</Filter>
     </ClInclude>
     <ClInclude Include="Source\ShaderLoader.h">
       <Filter>Source Files\Systems\Render\Shaders</Filter>
@@ -165,9 +171,6 @@
     <ClInclude Include="Source\Space.h">
       <Filter>Source Files\Systems\Space Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameObjectEnum.h">
-      <Filter>Source Files\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Level.h">
       <Filter>Source Files\Systems\Space Manager</Filter>
     </ClInclude>
@@ -201,9 +204,6 @@
     <ClInclude Include="Source\Pathfinding.h">
       <Filter>Source Files\Systems\Map</Filter>
     </ClInclude>
-    <ClInclude Include="Source\AStarObject.h">
-      <Filter>Source Files\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Source\UtilityAi.h">
       <Filter>Source Files\Systems\Utility AI</Filter>
     </ClInclude>
@@ -211,6 +211,21 @@
       <Filter>Source Files\Systems\Utility AI</Filter>
     </ClInclude>
     <ClInclude Include="Source\UtilityAiSystem.h">
+      <Filter>Source Files\Systems\Utility AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AStarObject.h">
+      <Filter>Source Files\Objects\AStarObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject.h">
+      <Filter>Source Files\Objects\Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObjectEnum.h">
+      <Filter>Source Files\Objects\Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameResource.h">
+      <Filter>Source Files\Objects\Game Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Job.h">
       <Filter>Source Files\Systems\Utility AI</Filter>
     </ClInclude>
   </ItemGroup>
@@ -234,7 +249,7 @@
       <Filter>Source Files\Editor\GUI</Filter>
     </ClCompile>
     <ClCompile Include="Source\Transform.cpp">
-      <Filter>Source Files\Objects\Components</Filter>
+      <Filter>Source Files\Objects\Component Headers</Filter>
     </ClCompile>
     <ClCompile Include="Source\GUI.cpp">
       <Filter>Source Files\Editor\GUI</Filter>
@@ -281,20 +296,11 @@
     <ClCompile Include="Source\Map.cpp">
       <Filter>Source Files\Systems\Map</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameObject.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Pathfinding.cpp">
       <Filter>Source Files\Systems\Map</Filter>
     </ClCompile>
-    <ClCompile Include="Source\AStarObject.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Source\pch.cpp">
       <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Physics.cpp">
-      <Filter>Source Files\Objects</Filter>
     </ClCompile>
     <ClCompile Include="Source\UtilityAI.cpp">
       <Filter>Source Files\Systems\Utility AI</Filter>
@@ -303,7 +309,19 @@
       <Filter>Source Files\Systems\Utility AI</Filter>
     </ClCompile>
     <ClCompile Include="Source\Collider.cpp">
-      <Filter>Source Files\Objects\Components</Filter>
+      <Filter>Source Files\Objects\Component Headers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AStarObject.cpp">
+      <Filter>Source Files\Objects\AStarObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject.cpp">
+      <Filter>Source Files\Objects\Game Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics.cpp">
+      <Filter>Source Files\Objects\Component Headers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameResource.cpp">
+      <Filter>Source Files\Objects\Game Resource</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

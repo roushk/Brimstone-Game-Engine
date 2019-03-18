@@ -202,6 +202,7 @@
     <ClInclude Include="Source\FileLoad.h" />
     <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\GameObjectEnum.h" />
+    <ClInclude Include="Source\GameResource.h" />
     <ClInclude Include="Source\GUI.h" />
     <ClInclude Include="Source\HalfPlane.h" />
     <ClInclude Include="Source\ImGuiManager.h" />
@@ -215,6 +216,7 @@
     <ClInclude Include="Source\imgui\stb_truetype.h" />
     <ClInclude Include="Source\InputEvent.h" />
     <ClInclude Include="Source\InputManager.h" />
+    <ClInclude Include="Source\Job.h" />
     <ClInclude Include="Source\Level.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\Need.h" />
@@ -247,6 +249,7 @@
     <ClCompile Include="Source\DungeonGen.cpp" />
     <ClCompile Include="Source\Engine.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
+    <ClCompile Include="Source\GameResource.cpp" />
     <ClCompile Include="Source\GUI.cpp" />
     <ClCompile Include="Source\HalfPlane.cpp" />
     <ClCompile Include="Source\ImGuiManager.cpp" />

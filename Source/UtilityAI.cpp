@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "UtilityAi.h"
 #include <gtx/norm.inl>
+#include "Job.h"
 
 
 void UtilityAI::addNeed(Need name, float min, float max, float start, float decay)
@@ -18,24 +19,43 @@ void UtilityAI::addFufillment(Need name, float fufillment_, float useTime)
 void UtilityAI::Update(float dt)
 {
   //TODO: should put all possible needs that should be fufilled into a queue and sort them
+  Need highestPriorityNeed = Need::None;
+  float highestPriorityNeedCost = 0;
+  canWork = true;
+
   for(auto& need: needs)
   {
+    
     need.second.currentValue -= dt * need.second.decay;
+    //decrements current value by scale to simulate time passing
+
+    need.second.currentCooldown -= dt * need.second.decay;
     //cooldown so doesn't spam the current value to like 50k in 2 seconds
     //currentCooldown can be negative, in fact will almost always be negative
-    need.second.currentCooldown -= dt * need.second.decay;
-    if(need.second.currentValue < need.second.min && reinterpret_cast<AStarObject*>(parent)->moving == false)
+
+
+    if(need.second.currentValue < need.second.min && reinterpret_cast<AStarObject*>(parent)->moving == false
+      && need.second.priority * (need.second.min - need.second.currentValue)> highestPriorityNeedCost )
     {
-      GetClosestFufillment(need.first, *map);
+      //cost is time past min * a scaling factor of priority
+      highestPriorityNeedCost = need.second.priority * (need.second.min - need.second.currentValue);
+      highestPriorityNeed = need.first;
     }
+  }
+  if(highestPriorityNeed != Need::None)
+  {
+    GetClosestFufillment(highestPriorityNeed);
+    canWork = false;
   }
 }
 
 //sends object to closest filler for need
-void UtilityAI::GetClosestFufillment(Need need, Map& map)
+void UtilityAI::GetClosestFufillment(Need need)
 {
   auto parentAstar = reinterpret_cast<AStarObject*>(parent);
-  if(parentAstar->request.computedPath == true)
+
+  //if we already have a path we have planned dont make a new one
+  if(parentAstar->request.computedPath)
   {
     return;
   }
@@ -45,7 +65,7 @@ void UtilityAI::GetClosestFufillment(Need need, Map& map)
   float min = std::numeric_limits<float>::max();
 
   GameObject* closestNeedFiller = nullptr;
-  for(auto &obj: map.objects.at(need))
+  for(auto &obj: map->objects.at(need))
   {
     float dist = glm::distance2(obj->GetComponent<Transform>()->GetTranslation(), pos);
     if(dist < min)
@@ -57,7 +77,7 @@ void UtilityAI::GetClosestFufillment(Need need, Map& map)
   
   parentAstar->request.start = parent->GetComponent<Transform>()->GetTranslation();
   parentAstar->request.goal = closestNeedFiller->GetComponent<Transform>()->GetTranslation();
-  parentAstar->request.map = &map;
+  parentAstar->request.map = map;
 
   parentAstar->request.settings.debugColoring = true;
   parentAstar->request.settings.rubberBanding = true;
@@ -69,7 +89,7 @@ void UtilityAI::GetClosestFufillment(Need need, Map& map)
   auto result = pather->compute_path(parentAstar->request);
   if(result == PathResult::IMPOSSIBLE)
   {
-    throw("Path Impossible");
+    std::cout << " Path Impossible " << std::endl;
   }
 }
 
@@ -94,4 +114,28 @@ void UtilityAI::resolveNeed(UtilityAI& rhs)
       need->second.currentCooldown = need->second.setCooldown;
     }
   }
+}
+
+void UtilityAI::SetJob(JobData& job)
+{
+  auto parentAstar = reinterpret_cast<AStarObject*>(parent);
+
+  //if we already have a path we have planned dont make a new one
+  if (parentAstar->request.computedPath)
+  {
+    return;
+  }
+  
+  parentAstar->request.start = parent->GetComponent<Transform>()->GetTranslation();
+  parentAstar->request.goal = job.jobGoal->GetComponent<Transform>()->GetTranslation();
+  parentAstar->request.map = map;
+
+  parentAstar->request.settings.debugColoring = true;
+  parentAstar->request.settings.rubberBanding = true;
+  parentAstar->request.settings.singleStep = false;
+  parentAstar->request.settings.smoothing = true;
+  parentAstar->request.settings.weight = 1.0f;
+  parentAstar->request.newRequest = true;
+
+  auto result = pather->compute_path(parentAstar->request);
 }
