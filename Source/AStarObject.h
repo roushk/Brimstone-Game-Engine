@@ -13,9 +13,9 @@ public:
   PathRequest request;
   bool moving = false;  //is the current object following a path
 
+  float movementSpeed = 200.0f;
 private:
   bool followPath = true;
-  float movementSpeed = 200.0f;
 
 };
 

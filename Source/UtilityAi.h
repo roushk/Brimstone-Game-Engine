@@ -21,7 +21,7 @@ public:
   void Update(float dt) override;
   void GetClosestFufillment(Need need);
   void resolveNeed(UtilityAI& rhs);
-  void SetJob(JobData& job);
+  void SetJob(std::shared_ptr<JobData>& job);
   void ResetJob();
   
   AStarPather* pather = nullptr;
@@ -31,8 +31,10 @@ public:
   bool canWork = true;
   bool isWorking = false;
 
-  JobData& currentJob = JobData_None;
+  std::shared_ptr<JobData> currentJob = JobData_None;
   float skill = 1.0f;
+
+  std::string currentState;
 
 private:
   static unsigned nextComponentID;

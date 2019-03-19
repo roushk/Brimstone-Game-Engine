@@ -18,14 +18,23 @@ void UtilityAI::addFufillment(Need name, float fufillment_, float useTime)
 
 void UtilityAI::Update(float dt)
 {
+  //system("CLS");
+  //std::cout << currentState << std::endl;
+
   //if object is moving dont do anything
   if (reinterpret_cast<AStarObject*>(parent)->moving == true)
+  {
+    currentState = "Moving Along Path";
     return;
+    
+  }
 
   //TODO: should put all possible needs that should be fufilled into a queue and sort them
   Need highestPriorityNeed = Need::None;
   float highestPriorityNeedCost = 0;
   canWork = true;
+
+  currentState = "Calculating Needs";
 
   for(auto& need: needs)
   {
@@ -50,7 +59,13 @@ void UtilityAI::Update(float dt)
   {
     GetClosestFufillment(highestPriorityNeed);
     canWork = false;
+    currentState = "Found Need";
+    if(isWorking)
+    {
+      ResetJob();
+    }
   }
+
 }
 
 //sends object to closest filler for need
@@ -61,8 +76,11 @@ void UtilityAI::GetClosestFufillment(Need need)
   //if we already have a path we have planned dont make a new one
   if(parentAstar->request.computedPath)
   {
+    
     return;
   }
+
+  
 
   auto pos = parent->GetComponent<Transform>()->GetTranslation();
 
@@ -93,7 +111,7 @@ void UtilityAI::GetClosestFufillment(Need need)
   auto result = pather->compute_path(parentAstar->request);
   if(result == PathResult::IMPOSSIBLE)
   {
-    std::cout << " Path Impossible " << std::endl;
+    currentState = "PATH IMPOSSIBLE BIG OOF";
   }
 }
 
@@ -125,11 +143,14 @@ void UtilityAI::resolveNeed(UtilityAI& rhs)
 void UtilityAI::ResetJob()
 {
   currentJob = JobData_None;
+  isWorking = false;
 }
 
-void UtilityAI::SetJob(JobData& job)
+void UtilityAI::SetJob(std::shared_ptr<JobData>& job)
 {
   currentJob = job;
+  //currentJob.get()->complete = true;
+  
   auto parentAstar = reinterpret_cast<AStarObject*>(parent);
 
   //if we already have a path we have planned dont make a new one
@@ -139,7 +160,7 @@ void UtilityAI::SetJob(JobData& job)
   }
   
   parentAstar->request.start = parent->GetComponent<Transform>()->GetTranslation();
-  parentAstar->request.goal = job.jobGoal->GetComponent<Transform>()->GetTranslation();
+  parentAstar->request.goal = job.get()->jobGoal->GetComponent<Transform>()->GetTranslation();
   parentAstar->request.map = map;
 
   parentAstar->request.settings.debugColoring = true;
