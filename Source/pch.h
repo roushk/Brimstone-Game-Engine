@@ -50,4 +50,7 @@
 #include "Level.h"
 #include "Window.h"
 
+#include "Color.h"
+#include "UI.h"
+#include "PointContainment2D.h"
 

@@ -195,6 +195,7 @@
     <ClInclude Include="Source\AStarObject.h" />
     <ClInclude Include="Source\BasicBehavior.h" />
     <ClInclude Include="Source\Collider.h" />
+    <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\Component.h" />
     <ClInclude Include="Source\ComponentManager.h" />
     <ClInclude Include="Source\DungeonGen.h" />
@@ -226,6 +227,7 @@
     <ClInclude Include="Source\PerformanceMetrics.h" />
     <ClInclude Include="Source\Physics.h" />
     <ClInclude Include="Source\PointContainment.h" />
+    <ClInclude Include="Source\PointContainment2D.h" />
     <ClInclude Include="Source\Random.h" />
     <ClInclude Include="Source\Remap.h" />
     <ClInclude Include="Source\Render.h" />
@@ -297,6 +299,7 @@
     </ClCompile>
     <ClCompile Include="Source\Physics.cpp" />
     <ClCompile Include="Source\PointContainment.cpp" />
+    <ClCompile Include="Source\PointContainment2D.cpp" />
     <ClCompile Include="Source\Render.cpp" />
     <ClCompile Include="Source\Space.cpp" />
     <ClCompile Include="Source\SpaceManager.cpp" />

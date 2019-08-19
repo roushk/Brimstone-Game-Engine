@@ -65,6 +65,8 @@ void Transform::SetTranslation(float x_,float y_)
   dirty = true;
 }
 
+/*try to avoid using the set translation qith the Z values, you need to re-call
+the set layer function to un-ruin it*/
 void Transform::SetTranslation(float x_, float y_, float z_)
 {
   translation.x = x_;
@@ -74,6 +76,8 @@ void Transform::SetTranslation(float x_, float y_, float z_)
   dirty = true;
 }
 
+/*try to avoid using the set translation qith the Z values, you need to re-call
+the set layer function to un-ruin it*/
 void Transform::SetTranslation(glm::vec3 translation_)
 {
   translation = translation_;

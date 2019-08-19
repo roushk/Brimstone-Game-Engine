@@ -86,13 +86,15 @@ public:
 
   void RemoveChild(GameObject& child)
   {
+    //reset parent pointer for child
+    child.parent = nullptr;
     //make sure that is how to remove objects from map
     children.erase(child.ID);
   }
-
+  
   
 
-  GameObject*  GetParent() const
+  GameObject* GetParent() const
   {
     return parent;
   }
@@ -129,19 +131,25 @@ public:
   //if the object moves inside the world or not (used for AStarPathing right now????)
   bool moveable = false;
 
+
+  //TODO: double check that if a parent is world space and a child isn't that it works as expected 
+  //though i don't think we need to care if someone uses the system like that as it still
+  //works properly technically
   //does the game object exist in world space or camera/screen space
   bool worldSpaceObject = true;
 
   //children objects based on the object ID's so no duplicates
-  std::map<unsigned, GameObject*> children;
 private:
 
+
+  //TODO add error checking if child and parent loop???
   //use Add Child not set parent
   void SetParent(GameObject& parent_)
   {
     parent = &parent_;
 
   }
+  std::map<unsigned, GameObject*> children;
   GameObject* parent = nullptr;
   static unsigned NextGameObjectID;
   std::unique_ptr<Component> components[ctOutOfBounds];

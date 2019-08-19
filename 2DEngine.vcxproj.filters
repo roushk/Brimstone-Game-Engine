@@ -76,8 +76,11 @@
     <Filter Include="Source Files\Objects\Game Resource">
       <UniqueIdentifier>{292b1c3f-c199-420c-9a29-5673b757b917}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\UI">
+    <Filter Include="Source Files\Objects\UI">
       <UniqueIdentifier>{2e9e4888-1613-4704-8ab8-9d2b9805ffe6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Collision Detection">
+      <UniqueIdentifier>{fde48c28-9817-4946-bbb8-562fcdda8eff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -232,7 +235,13 @@
       <Filter>Source Files\Systems\Utility AI</Filter>
     </ClInclude>
     <ClInclude Include="Source\UI.h">
-      <Filter>Source Files\UI</Filter>
+      <Filter>Source Files\Objects\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Color.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PointContainment2D.h">
+      <Filter>Source Files\Systems\Collision Detection</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -330,7 +339,10 @@
       <Filter>Source Files\Objects\Game Resource</Filter>
     </ClCompile>
     <ClCompile Include="Source\UI.cpp">
-      <Filter>Source Files\UI</Filter>
+      <Filter>Source Files\Objects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PointContainment2D.cpp">
+      <Filter>Source Files\Systems\Collision Detection</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
