@@ -18,6 +18,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/transform.hpp>
 #include <gtx/transform.hpp>
+#include <gtx/norm.hpp>
+
 
 //Imgui
 #include "imgui/imgui.h"
@@ -53,4 +55,6 @@
 #include "Color.h"
 #include "UI.h"
 #include "PointContainment2D.h"
+#include "UtilityAi.h"
+#include "Job.h"
 

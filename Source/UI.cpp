@@ -1,6 +1,25 @@
 #include "pch.h"
 
 
+void UIDefault::OnHoverStart(UIElement& element)
+{
+  element.color = Color.Red;
+}
+
+void UIDefault::OnHover(UIElement& element)
+{
+  element.color = Color.Blue;
+}
+
+void UIDefault::OnHoverEnd(UIElement& element)
+{
+  element.color = glm::vec4(0,0,0,1);
+}
+
+void UIDefault::OnClick(UIElement& element)
+{
+  element.tempColor = Color.Yellow;
+}
 
 UIElement::UIElement(glm::vec2 position_, glm::vec2 scale_, bool worldSpace) : GameObject()
 {
@@ -32,9 +51,15 @@ bool UIElement::isHovered(glm::vec2 worldMousePosition)
 void UIElement::Update(float dt)
 {
   GameObject::Update(dt);
-  
-  isHoveredThisFrame = isHovered(engine.GetSystem<InputManager>()->mouseWorldCoords);
 
+  if(worldSpaceObject)
+  {
+    isHoveredThisFrame = isHovered(engine.GetSystem<InputManager>()->mouseWorldCoords);
+  }
+  else
+  {
+    isHoveredThisFrame = isHovered(engine.GetSystem<InputManager>()->mouseScreenCoords);
+  }
 
   //TODO and if mouseButton is down
   //TODO actual input manager lol
@@ -42,15 +67,15 @@ void UIElement::Update(float dt)
   //just hovered
   if(isHoveredThisFrame && !isHoveredLastFrame)
   {
-    OnHoverStart();
+    OnHoverStart(*this);
   }
   else if (isHoveredThisFrame && isHoveredLastFrame)
   {
-    OnHover();
+    OnHover(*this);
   }
   else if (!isHoveredThisFrame && isHoveredLastFrame)
   {
-    OnHoverEnd();
+    OnHoverEnd(*this);
   }
 
   isHoveredLastFrame = isHoveredThisFrame;

@@ -1,7 +1,5 @@
 #include "pch.h"
-#include "UtilityAi.h"
-#include <gtx/norm.inl>
-#include "Job.h"
+
 
 
 void UtilityAI::addNeed(Need name, float min, float max, float start, float decay)

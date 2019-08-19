@@ -10,6 +10,7 @@
 namespace GameObjectLayer
 {
  
+  //TODO remove the namespace shit and do this enum correctly
   enum GameObjectLayer : unsigned
   {
     Background,

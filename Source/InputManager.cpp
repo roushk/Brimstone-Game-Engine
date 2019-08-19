@@ -53,9 +53,10 @@ void InputManager::Update(float dt)
   }
 
   //mouse world coord transformations
-  mouseWorldCoords = scaleToWorld * glm::vec4(mouseScreenCoords, 0, 0);
+  mouseWorldCoords = scaleToWorld * glm::vec4(mouseNDC, 0, 0);
   //used to test
   mouseWorldCoords *= (1.0f / engine.GetSystem<Render>()->cameraScale);
+  mouseScreenCoords = mouseWorldCoords;
   mouseWorldCoords -= engine.GetSystem<Render>()->cameraPos;
   //engine.GetSystem<Render>()->objects.front()->GetComponent<Transform>()->SetTranslation(mouseWorldCoords);
   engine.GetSystem<Render>()->objects.front()->GetComponent<Transform>()->SetTranslation(mouseWorldCoords);
@@ -270,8 +271,8 @@ void InputManager::Update(float dt)
   {
     //updates mouse world and mouse screen coords
       
-    //mouseScreenCoords = glm::vec2((-screenSize.x / 2.0f + event.motion.x) * aspect, screenSize.y / 2.0f + -event.motion.y);
-    mouseScreenCoords = glm::vec2((-screenSize.x + event.motion.x * 2.0f) * aspect, screenSize.y + -event.motion.y * 2.0f);
+    //mouseNDC = glm::vec2((-screenSize.x / 2.0f + event.motion.x) * aspect, screenSize.y / 2.0f + -event.motion.y);
+    mouseNDC = glm::vec2((-screenSize.x + event.motion.x * 2.0f) * aspect, screenSize.y + -event.motion.y * 2.0f);
 
   }
     break;
