@@ -88,6 +88,9 @@ private:
   //glm::mat4 modelView = glm::mat4(1.0f);
   //glm::mat4 modelTransform; //model transform is objects transform
   glm::mat4 worldToNDC = glm::mat4(1.0f);
+  glm::mat4 cameraMatrix = glm::mat4(1.0f);
+  const glm::mat4 mat4identity = glm::mat4(1.0f);
+  
   //no pers proj cause 2d
 
   Window window;
@@ -102,6 +105,11 @@ private:
   GLuint vertexbuffers[MAXVERTEXBUFFERS];
   GLuint uboCamera;
 
+  /*UBO camera is setup as such
+  Object in world transform
+  World to NDC transform
+  World to Camera transform (optionally can be inserted between the object to world and World to NDC for camera)
+  */
 
   const unsigned edges[8]{ 0,1, 1,2, 2,3, 3,0 };
   const unsigned faces[6]{ 0,1,2, 0,2,3 };

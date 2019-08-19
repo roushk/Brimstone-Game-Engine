@@ -20,7 +20,7 @@ class GameObject
   friend ComponentManager;
 public:
   virtual ~GameObject() = default;
-  //Automatically adds Sprite and Transform to GameObject
+  //Automatically adds Sprite and Transform to GameObject because every object needs these two
   GameObject(): ID(NextGameObjectID++) 
   { AddComponent<Sprite>(); AddComponent<Transform>(); };
 
@@ -67,20 +67,82 @@ public:
     layer = layer_;
     GetComponent<Transform>()->translation.z = -(float(layer_) / float(GameObjectLayer::OutOfBounds));
   }
+
+  float GetLayerZValue() const
+  {
+    return -(float(layer) / float(GameObjectLayer::OutOfBounds));
+  }
   
   unsigned GetLayer() const
   {
     return layer;
   }
 
+  void AddChild(GameObject& child)
+  {
+    child.parent = this;
+    children.insert_or_assign(child.ID, &child);
+  }
+
+  void RemoveChild(GameObject& child)
+  {
+    //make sure that is how to remove objects from map
+    children.erase(child.ID);
+  }
+
+  
+
+  GameObject*  GetParent() const
+  {
+    return parent;
+  }
+
+  //gets all the matrices through to the parents one in a recursive function
+  //that goes up through the matrices to get the total matrix
+  //technically (untested) you should be able to multiply the transform of the object up this chain
+  //of matrices to get the actual world space of the object and not just the local to parent transform
+  glm::mat4 GetMatrix() const
+  { 
+    //the negative parent get z is to undo the layering that is introduces when setting the layer of the object
+    //this layering works perfectly for a single object but if you want to concat the matrices you need
+    //to undo the layer of the parent so that the layer of the child is correct
+    if(parent != nullptr)
+      return GetComponent<Transform>()->GetMatrix() * glm::translate(glm::vec3(0,0,-parent->GetLayerZValue())) *  parent->GetMatrix();
+
+    //if this is the only object up the parent chain then we don't need to do anything
+    return GetComponent<Transform>()->GetMatrix();
+  };
+
+
   glm::vec4 color{0,0,0,1};
   glm::vec4 tempColor{0,0,0,1};
+
+  //layer that the object exists for rendering purposes
   unsigned layer = GameObjectLayer::OutOfBounds;
+
+  //unique ID of the current game object
   unsigned ID;
+
+  //draw edges of the mesh Not the sprite
   bool drawEdges = false;
+
+  //if the object moves inside the world or not (used for AStarPathing right now????)
   bool moveable = false;
+
+  //does the game object exist in world space or camera/screen space
+  bool worldSpaceObject = true;
+
+  //children objects based on the object ID's so no duplicates
+  std::map<unsigned, GameObject*> children;
 private:
 
+  //use Add Child not set parent
+  void SetParent(GameObject& parent_)
+  {
+    parent = &parent_;
+
+  }
+  GameObject* parent = nullptr;
   static unsigned NextGameObjectID;
   std::unique_ptr<Component> components[ctOutOfBounds];
   unsigned componentIDs[ctOutOfBounds];
