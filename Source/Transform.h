@@ -21,6 +21,11 @@ public:
 
   void SetTranslation(glm::vec2 translation_);
   void SetTranslation(glm::vec3 translation_);
+
+  void SetTranslation(float x_, float y_);
+  void SetTranslation(float x_, float y_, float z_);
+
+
   void SetScale(glm::vec2 scale_);
   void SetScale(float scale_);
   //rotation is in radians

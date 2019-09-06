@@ -19,6 +19,7 @@ enum class SystemTypes
   ImGuiManager,
   InputManager,
   CollisionManager,
+  UtilityAiSystem,
   OutOfBounds
 };
 

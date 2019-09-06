@@ -58,7 +58,26 @@ void Transform::SetTranslation(glm::vec2 translation_)
   translation.y = translation_.y;
   dirty = true;
 }
+void Transform::SetTranslation(float x_,float y_)
+{
+  translation.x = x_;
+  translation.y = y_;
+  dirty = true;
+}
 
+/*try to avoid using the set translation qith the Z values, you need to re-call
+the set layer function to un-ruin it*/
+void Transform::SetTranslation(float x_, float y_, float z_)
+{
+  translation.x = x_;
+  translation.y = y_;
+  translation.z = z_;
+
+  dirty = true;
+}
+
+/*try to avoid using the set translation qith the Z values, you need to re-call
+the set layer function to un-ruin it*/
 void Transform::SetTranslation(glm::vec3 translation_)
 {
   translation = translation_;
@@ -86,7 +105,7 @@ glm::mat4& Transform::GetMatrix()
 {
   //scale has 1 in the z
   //rotated around the z = 1 vector
-  if(dirty == true)
+  if(dirty)
   {
     matrix = translate(translation) * 
       rotate(rotation, vec3{ 0,0,1 }) * 

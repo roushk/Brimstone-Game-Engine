@@ -28,6 +28,7 @@ enum ComponentTypes
   ctBasicBehavior,
   ctCollider,
   ctAI,
+  ctUtilityAI,
   ctParticleManager,
   ctOutOfBounds
 };

@@ -195,6 +195,7 @@
     <ClInclude Include="Source\AStarObject.h" />
     <ClInclude Include="Source\BasicBehavior.h" />
     <ClInclude Include="Source\Collider.h" />
+    <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\Component.h" />
     <ClInclude Include="Source\ComponentManager.h" />
     <ClInclude Include="Source\DungeonGen.h" />
@@ -202,6 +203,7 @@
     <ClInclude Include="Source\FileLoad.h" />
     <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\GameObjectEnum.h" />
+    <ClInclude Include="Source\GameResource.h" />
     <ClInclude Include="Source\GUI.h" />
     <ClInclude Include="Source\HalfPlane.h" />
     <ClInclude Include="Source\ImGuiManager.h" />
@@ -215,14 +217,17 @@
     <ClInclude Include="Source\imgui\stb_truetype.h" />
     <ClInclude Include="Source\InputEvent.h" />
     <ClInclude Include="Source\InputManager.h" />
+    <ClInclude Include="Source\Job.h" />
     <ClInclude Include="Source\Level.h" />
     <ClInclude Include="Source\Map.h" />
+    <ClInclude Include="Source\Need.h" />
     <ClInclude Include="Source\ParticleManager.h" />
     <ClInclude Include="Source\Pathfinding.h" />
     <ClInclude Include="Source\pch.h" />
     <ClInclude Include="Source\PerformanceMetrics.h" />
     <ClInclude Include="Source\Physics.h" />
     <ClInclude Include="Source\PointContainment.h" />
+    <ClInclude Include="Source\PointContainment2D.h" />
     <ClInclude Include="Source\Random.h" />
     <ClInclude Include="Source\Remap.h" />
     <ClInclude Include="Source\Render.h" />
@@ -234,15 +239,20 @@
     <ClInclude Include="Source\System.h" />
     <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\Transform.h" />
+    <ClInclude Include="Source\UI.h" />
+    <ClInclude Include="Source\UtilityAi.h" />
+    <ClInclude Include="Source\UtilityAiSystem.h" />
     <ClInclude Include="Source\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\2.5D Engine.cpp" />
     <ClCompile Include="Source\AssetManager.cpp" />
     <ClCompile Include="Source\AStarObject.cpp" />
+    <ClCompile Include="Source\Collider.cpp" />
     <ClCompile Include="Source\DungeonGen.cpp" />
     <ClCompile Include="Source\Engine.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
+    <ClCompile Include="Source\GameResource.cpp" />
     <ClCompile Include="Source\GUI.cpp" />
     <ClCompile Include="Source\HalfPlane.cpp" />
     <ClCompile Include="Source\ImGuiManager.cpp" />
@@ -289,10 +299,14 @@
     </ClCompile>
     <ClCompile Include="Source\Physics.cpp" />
     <ClCompile Include="Source\PointContainment.cpp" />
+    <ClCompile Include="Source\PointContainment2D.cpp" />
     <ClCompile Include="Source\Render.cpp" />
     <ClCompile Include="Source\Space.cpp" />
     <ClCompile Include="Source\SpaceManager.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
+    <ClCompile Include="Source\UI.cpp" />
+    <ClCompile Include="Source\UtilityAI.cpp" />
+    <ClCompile Include="Source\UtilityAiSystem.cpp" />
     <ClCompile Include="Source\Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

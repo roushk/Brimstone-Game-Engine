@@ -19,6 +19,7 @@
 #include "ParticleManager.h"
 #include "Engine.h"
 #include <queue>
+#include "UtilityAi.h"
 
 #define MAXOBJECTS 60000
 #define UNREFERENCED_PARAMETER(P) (P)
@@ -53,6 +54,8 @@ public:
           components[i][j] = new Collider;
         if (i == ctAI)
           components[i][j] = new AI;
+        if (i == ctUtilityAI)
+          components[i][j] = new UtilityAI;
         if (i == ctParticleManager)
           components[i][j] = new ParticleManager;
       }

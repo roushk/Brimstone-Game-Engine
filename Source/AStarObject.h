@@ -11,10 +11,12 @@ public:
   void Update(float dt) override;
 
   PathRequest request;
-private:
-  bool computingPath = false;
-  bool followPath = true;
+  bool moving = false;  //is the current object following a path
+
   float movementSpeed = 200.0f;
+private:
+  bool followPath = true;
+
 };
 
 

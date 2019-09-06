@@ -8,6 +8,12 @@ grass2.DDS
 numberedAnimation1.DDS
 numberedAnimation2.DDS
 outOfBounds.DDS
+testjob1.DDS
+testjob2.DDS
+testjob3.DDS
+testneed1.DDS
+testneed2.DDS
+testneed3.DDS
 testTransparency.DDS
 Wall1.DDS
 worker.DDS

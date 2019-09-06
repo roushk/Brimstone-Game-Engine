@@ -57,19 +57,19 @@ void Render::resize(int w, int h)
   glViewport(0, 0, w, window.height);
   window.aspect = float(w) / float(window.height);
 
-  glm::mat4 position{
+  glm::mat4 aspectRatioMatrix{
     1.0f / window.aspect, 0, 0, 0,
     0, 1.0f , 0, 0,
     0, 0, 1, 0,
     0, 0, 0, 1 };
 
-  glm::mat4 objToWorld{
+  glm::mat4 objectToWorld{
     1.0f / worldScale, 0, 0, 0,
     0, 1.0f / worldScale , 0, 0,
     0, 0, 1, 0,
     0, 0, 0, 1 };
 
-  worldToNDC = position * objToWorld;
+  worldToNDC = aspectRatioMatrix * objectToWorld;
 
 }
 
@@ -109,6 +109,26 @@ void Render::Update(const float dt)
   {
     obj->Update(dt);
   }
+  for (auto& obj : objects)
+  {
+    if(obj->HasComponent<Collider>())
+    {
+      for (auto& obj2 : objects)
+      {
+        if (obj->ID == obj2->ID)
+          continue;
+        if (obj2->HasComponent<Collider>())
+        {
+          if(obj->GetComponent<Collider>()->isColliding(*obj2->GetComponent<Collider>()))
+          {
+            obj->GetComponent<Collider>()->resolveCollision(obj2);
+          }
+        }
+      }
+      
+    }
+  }
+
   UNREFERENCED_PARAMETER(dt);
   
   ClearScreen();
@@ -127,14 +147,16 @@ void Render::Update(const float dt)
   //WARNING IF YOU YOU USE OTHER SHADERS MAKE SURE TO BUFFER THE WORLDTONDC MATRIX FOR THEM
   //WILL CAUSE ERROR IF MULTIPLE SHADERS USED
   glUseProgram(programID);
-  glm::mat4 matrix = glm::translate(glm::scale(  glm::mat4(1.0f), glm::vec3(cameraScale, 1.0f)), glm::vec3(cameraPos, 0)) ;
+  
+  cameraMatrix = glm::translate(glm::scale(  glm::mat4(1.0f), glm::vec3(cameraScale, 1.0f)), glm::vec3(cameraPos, 0)) ;
+  
+  
   //glUniformMatrix4fv(glGetUniformLocation(programID, "worldToNDC"), 1, GL_FALSE, glm::value_ptr(worldToNDC));
   //glUniformMatrix4fv(glGetUniformLocation(programID, "camera"), 1, GL_FALSE, glm::value_ptr(matrix));
 
-
+  //bind world to NDC transform once
   glBindBuffer(GL_UNIFORM_BUFFER, uboCamera);
   glBufferSubData(GL_UNIFORM_BUFFER, sizeof glm::mat4, sizeof glm::mat4, glm::value_ptr(worldToNDC));
-  glBufferSubData(GL_UNIFORM_BUFFER, sizeof glm::mat4 * 2, sizeof glm::mat4, glm::value_ptr(matrix));
   glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
   //DrawMap(dt);
@@ -171,12 +193,29 @@ void Render::DrawObject(GameObject& obj)
   //glUniformMatrix4fv(glGetUniformLocation(programID, "modelView"), 1, GL_FALSE, glm::value_ptr(modelView));
   //glUniformMatrix4fv(glGetUniformLocation(programID, "modelTransform"), 1, GL_FALSE, glm::value_ptr(obj.GetComponent<Transform>()->GetMatrix()));
 
-
+  //buffering at size of matrix * 1 for the world to NDC matrix and matrix * 2 for the NDC to Camera Matrix
   glBindBuffer(GL_UNIFORM_BUFFER, uboCamera);
-  glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof glm::mat4, glm::value_ptr(obj.GetComponent<Transform>()->GetMatrix()));
+
+  //buffer object transform
+  glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof glm::mat4, glm::value_ptr(obj.GetMatrix()));
+  
+  //if object is a world space object then buffer the camera transform (which moves the object based on the camera)
+  if(obj.worldSpaceObject)
+  {
+    glBufferSubData(GL_UNIFORM_BUFFER, sizeof glm::mat4 * 2, sizeof glm::mat4, glm::value_ptr(cameraMatrix));
+    
+  }
+  else
+  {
+    //if not then buffer the identity matrix so the object does not move
+    glBufferSubData(GL_UNIFORM_BUFFER, sizeof glm::mat4 * 2, sizeof glm::mat4, glm::value_ptr(mat4identity));
+
+  }
+  //buffering at 0 for the object in world space transform
+  
   glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-  //Draw verts * faces
+  //Draw verts * faces which happens to be 3 verts times 2 faces for a total of 1 quad
   glDrawElements(GL_TRIANGLES, 3 * 2, GL_UNSIGNED_INT, 0);
 
   //TODO fix draw edges to be selection box

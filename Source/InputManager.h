@@ -33,6 +33,7 @@ public:
 
   glm::vec2 screenSize;
 
+  glm::vec2 mouseNDC;
   glm::vec2 mouseScreenCoords;
   glm::vec2 mouseWorldCoords;
 

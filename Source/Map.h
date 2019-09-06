@@ -1,6 +1,7 @@
 #ifndef MAP_H
 #define MAP_H
 
+#include "Need.h"
 #include <vector>
 #include <glm.hpp>
 #include "GameObject.h"
@@ -96,6 +97,8 @@ public:
   }
   std::string name = "MapName";
   std::vector<std::vector<MapNode>> data;
+  std::map<Need, std::vector<GameObject*>> objects;
+
   float height, width;
   glm::vec2 offset{0,0};
   //float mapSizeInWorld;

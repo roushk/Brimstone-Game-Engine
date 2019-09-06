@@ -16,3 +16,12 @@ GameObject& GameObject::operator=(const GameObject & rhs)
   return *this;
   //continue for all until ctOutOfBounds
 }
+
+void GameObject::Update(float dt)
+{
+  if(HasComponent<UtilityAI>())
+  {
+    GetComponent<UtilityAI>()->Update(dt);
+  }
+
+}
