@@ -66,18 +66,21 @@ void UtilityAiSystem::Update(const float dt)
         collider->isColliding(*utility->currentJob.get()->jobGoal->GetComponent<Collider>()))
       {
         utility->currentJob.get()->timeToFinish -= utility->skill * dt;
-        utility->currentJob.get()->jobGoal->GetComponent<Transform>()->SetScale(utility->currentJob.get()->timeToFinish);
-
+        //utility->currentJob.get()->jobGoal->GetComponent<Transform>()->SetScale(utility->currentJob.get()->timeToFinish);
+        utility->currentJob.get()->percentage =
+          100.0f * (utility->currentJob.get()->timeToFinish / utility->currentJob.get()->totalTimeToFinish);
 
         if(utility->currentJob.get()->timeToFinish <= 0)
         {
+          
           //set state to not working to accept new job
           utility->isWorking = false;
           //set current job to finished
           utility->currentJob.get()->complete = true;
-          utility->currentJob.get()->jobGoal->GetComponent<Transform>()->SetRotation(3.14f/4.0f);
-          auto* transform = utility->currentJob.get()->jobGoal->GetComponent<Transform>();
-          transform->SetScale(transform->GetScale() / 2.0f);
+          //utility->currentJob.get()->jobGoal->GetComponent<Transform>()->SetRotation(3.14f/4.0f);
+          //auto* transform = utility->currentJob.get()->jobGoal->GetComponent<Transform>();
+          //transform->SetScale(transform->GetScale() / 2.0f);
+          
           utility->currentState = "Reset Job";
 
 

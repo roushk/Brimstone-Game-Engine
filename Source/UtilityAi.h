@@ -34,6 +34,7 @@ public:
   std::shared_ptr<JobData> currentJob = JobData_None;
   float skill = 1.0f;
 
+
   std::string currentState;
 
 private:

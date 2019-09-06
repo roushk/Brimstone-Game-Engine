@@ -21,6 +21,57 @@ void UIDefault::OnClick(UIElement& element)
   element.tempColor = Color.Yellow;
 }
 
+void UIDefault::OnUpdate(UIElement& element)
+{
+  //empty so it does nothing
+}
+
+void UIJob::OnUpdate(UIElement& element)
+{
+  
+}
+
+void UIElementAnchor::Update()
+{
+  glm::vec2 position = parent->GetComponent<Transform>()->GetTranslation();
+  glm::vec2 scale = parent->GetComponent<Transform>()->GetScale();
+
+  //undo the current offset change
+  position -= anchorOffset + offsetAfterAnchor;
+
+
+  //update the current offset 
+  if(horizontalAnchor == HorizontalAnchor::Left)
+  {
+    anchorOffset.x = position.x - scale.x;
+  }
+  else if(horizontalAnchor == HorizontalAnchor::Right)
+  {
+    anchorOffset.x = position.x + scale.x;
+  }
+  else if (horizontalAnchor == HorizontalAnchor::Center)
+  {
+    anchorOffset.x = position.x;
+  }
+
+  if (verticalAnchor == VerticalAnchor::Bottom)
+  {
+    anchorOffset.y = position.y - scale.y;
+  }
+  else if (verticalAnchor == VerticalAnchor::Top)
+  {
+    anchorOffset.y = position.y + scale.y;
+  }
+  else if (verticalAnchor == VerticalAnchor::Center)
+  {
+    anchorOffset.y = position.y;
+  }
+
+  //apply the new offset
+  position += anchorOffset + offsetAfterAnchor;
+
+}
+
 UIElement::UIElement(glm::vec2 position_, glm::vec2 scale_, bool worldSpace) : GameObject()
 {
   GetComponent<Transform>()->SetScale(scale_);
@@ -50,7 +101,12 @@ bool UIElement::isHovered(glm::vec2 worldMousePosition)
 
 void UIElement::Update(float dt)
 {
+  anchor.Update();
   GameObject::Update(dt);
+
+
+
+
 
   if(worldSpaceObject)
   {
@@ -79,4 +135,5 @@ void UIElement::Update(float dt)
   }
 
   isHoveredLastFrame = isHoveredThisFrame;
+
 }
