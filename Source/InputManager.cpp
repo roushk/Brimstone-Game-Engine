@@ -9,6 +9,7 @@
 
 #define GLM_ENABLE_EXPERIMENTAL
 
+#define CAMERA_ACCEL_SPEED 1000
 #include <glm/gtx/transform.hpp>
 
 
@@ -20,10 +21,67 @@ InputManager::InputManager() : System()
     (engine.GetSystem<Render>()->worldScale) / screenSize.x, 
     (engine.GetSystem<Render>()->worldScale) / screenSize.y, 1));
   aspect = screenSize.x / screenSize.y;
+
+
+
+
+
+
+  eventQueue.push_back(
+    std::make_pair(InputEvent{ InputEvents::KeyboardButton, SDL_SCANCODE_W },
+      [](float dt)
+  {
+    engine.GetSystem<Render>()->cameraVel += glm::vec2(0, -CAMERA_ACCEL_SPEED * dt);
+  }));
+
+  eventQueue.push_back(
+    std::make_pair(InputEvent{ InputEvents::KeyboardButton, SDL_SCANCODE_S },
+      [](float dt)
+      {
+        engine.GetSystem<Render>()->cameraVel += glm::vec2(0, CAMERA_ACCEL_SPEED * dt);
+      }));
+
+  eventQueue.push_back(
+    std::make_pair(InputEvent{ InputEvents::KeyboardButton, SDL_SCANCODE_A },
+      [](float dt)
+      {
+        engine.GetSystem<Render>()->cameraVel += glm::vec2(CAMERA_ACCEL_SPEED * dt,0);
+      }));
+
+  eventQueue.push_back(
+    std::make_pair(InputEvent{ InputEvents::KeyboardButton, SDL_SCANCODE_D},
+      [](float dt)
+      {
+        engine.GetSystem<Render>()->cameraVel += glm::vec2(-CAMERA_ACCEL_SPEED * dt, 0);
+      }));
+
+  /*
+  if (event.key.keysym.scancode == SDL_SCANCODE_W)
+  {
+    //eventQueue.push_back(InputEvent{ InputEvents::KeyboardButton, SDLK_w });
+  }
+  if (event.key.keysym.scancode == SDL_SCANCODE_A)
+  {
+    //eventQueue.push_back(InputEvent{ InputEvents::KeyboardButton, SDLK_a });
+
+    engine.GetSystem<Render>()->cameraVel += glm::vec2(cameraAccelSpeed, 0);
+  }
+  if (event.key.keysym.scancode == SDL_SCANCODE_S)
+  {
+    engine.GetSystem<Render>()->cameraVel += glm::vec2(0, cameraAccelSpeed);
+  }
+  if (event.key.keysym.scancode == SDL_SCANCODE_D)
+  {
+    engine.GetSystem<Render>()->cameraVel += glm::vec2(-cameraAccelSpeed, 0);
+  }
+
+  */
 }
 
 InputManager::~InputManager()
 {
+
+
 }
 
 void InputManager::Update(float dt)
@@ -76,7 +134,7 @@ void InputManager::Update(float dt)
   //if you press the close button the game shutsdown the engine
   case SDL_QUIT:
     {
-    engine.Stop();
+      engine.Stop();
     }
     break;
 
@@ -105,25 +163,11 @@ void InputManager::Update(float dt)
 /*SDL_KeyboardEvent*/
   case SDL_KEYDOWN:
     {
-    
-      float cameraAccelSpeed = 10.0f;
+    inputEvents.push_back({ InputEvents::KeyboardButton, event.key.keysym.scancode });
 
-      if(event.key.keysym.scancode == SDL_SCANCODE_W)
-      {
-        engine.GetSystem<Render>()->cameraVel += glm::vec2(0, -cameraAccelSpeed);
-      }
-      if (event.key.keysym.scancode == SDL_SCANCODE_A)
-      {
-        engine.GetSystem<Render>()->cameraVel += glm::vec2(cameraAccelSpeed, 0);
-      }
-      if (event.key.keysym.scancode == SDL_SCANCODE_S)
-      {
-        engine.GetSystem<Render>()->cameraVel += glm::vec2(0, cameraAccelSpeed);
-      }
-      if (event.key.keysym.scancode == SDL_SCANCODE_D)
-      {
-        engine.GetSystem<Render>()->cameraVel += glm::vec2(-cameraAccelSpeed, 0);
-      }
+    
+
+     
       //engine.GetSystem<Render>()->cameraPos =
       //  glm::translate(engine.GetSystem<Render>()->cameraPos, glm::vec3(cameraPos, 0));
     }
@@ -202,6 +246,7 @@ void InputManager::Update(float dt)
         minPoint = mouseWorldCoords - glm::vec2(boxRadius);
         maxPoint = mouseWorldCoords + glm::vec2(boxRadius);
       }
+      
 
       float dist = glm::distance(mouseWorldCoords, maxPoint);
       GameObject* object = nullptr;
@@ -489,5 +534,12 @@ none, use .type
 
   //update internet settings
 
+  for (auto& inputEvent : eventQueue)
+  {
+    if (event.key.keysym.scancode == inputEvent.first.keycode)
+    {
+      inputEvent.second(dt);
+    }
+  }
 
 }

@@ -15,8 +15,8 @@
 #define GLM_ENABLE_EXPERIMENTAL
 
 #include <glm/gtx/transform.hpp>
-
-
+#include "InputEvent.h"
+#include <functional>
 
 
 class InputManager: public System
@@ -28,7 +28,10 @@ public:
   void Update(float dt) override;
   static const SystemTypes type = SystemTypes::InputManager;
 
-  
+  //SDL_SCANCODE_KEY to event
+  std::map<int, InputEvent> inputEvents;
+  std::vector<std::pair<InputEvent, std::function<void(float)>>> eventQueue;
+
   //std::queue<InputEvent> inputEvents;
 
   glm::vec2 screenSize;
@@ -49,6 +52,7 @@ public:
   std::vector<GameObject*> selected;
   Map* map;
   AStarPather pather;
+  float cameraAccelSpeed = 10.0f;
 
 };
 
