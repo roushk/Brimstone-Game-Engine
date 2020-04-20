@@ -28,10 +28,15 @@ public:
   void Update(float dt) override;
   static const SystemTypes type = SystemTypes::InputManager;
 
-  //SDL_SCANCODE_KEY to event
-  std::map<int, InputEvent> inputEvents;
-  std::vector<std::pair<InputEvent, std::function<void(float)>>> eventQueue;
+  //SDL_SCANCODE_KEY to current status of the key
+  //saves the key so to check the input only need to access the SDL_SCANCODE
+  //of the key into the map and check the value
+  //ranged 4 to 284
+  std::map<int, InputButtonEvent> inputMap;
 
+  //map of keycodes to a vector of events which are a pair of button event type to function
+  std::map<int, std::vector<std::pair<InputButtonEvent, std::function<void(float)>>>> inputEvents;
+  void AddInputEvent(int SDLScancode, InputButtonEvent eventType, std::function<void(float)> func);
   //std::queue<InputEvent> inputEvents;
 
   glm::vec2 screenSize;

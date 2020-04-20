@@ -8,7 +8,7 @@
 #define INPUT_EVENT_H
 
 
-enum class InputEvents
+enum class InputEventType
 {
   MouseButton,    //clicking button
   KeyboardButton,         //keyboard/controller down
@@ -17,10 +17,11 @@ enum class InputEvents
 };
 
 
-enum class InputMouseButtonEvents
+enum class InputButtonEvent
 {
-  OnPress,      //Key Pressed
-  OnRelease,    //Key Released
+  OnNone,       //Key is untouched this frame or last frame, default state
+  OnPress,      //Key Pressed (Pressed this frame)
+  OnRelease,    //Key Released (Released this frame)
   OnHold,       //Key Held (Pressed last frame)
   OutOfBounds
 };
@@ -29,16 +30,16 @@ enum class InputMouseButtonEvents
 class InputEvent
 {
 public:
-  InputEvent(InputEvents eventType_, InputMouseButtonEvents buttonEvent_) :
+  InputEvent(InputEventType eventType_, InputButtonEvent buttonEvent_) :
   eventType(eventType_), buttonEvent(buttonEvent_) {}
 
-  InputEvent(InputEvents eventType_, int keycode_) : 
+  InputEvent(InputEventType eventType_, int keycode_) : 
   eventType(eventType_), keycode(keycode_) {}
 
-  InputEvents eventType = InputEvents::OutOfBounds;
+  InputEventType eventType = InputEventType::OutOfBounds;
 
   //mouse event if using mouse
-  InputMouseButtonEvents buttonEvent = InputMouseButtonEvents::OutOfBounds;
+  InputButtonEvent buttonEvent = InputButtonEvent::OutOfBounds;
 
   //keycode if using key
   int keycode = 0;  //Using SDKL_KEY NOT SDL_SCANCODE_KEY

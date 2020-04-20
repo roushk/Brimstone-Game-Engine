@@ -23,38 +23,38 @@ InputManager::InputManager() : System()
   aspect = screenSize.x / screenSize.y;
 
 
-
-
-
-
-  eventQueue.push_back(
-    std::make_pair(InputEvent{ InputEvents::KeyboardButton, SDL_SCANCODE_W },
-      [](float dt)
+  for(int i = 4; i < 285; ++i)
   {
-    engine.GetSystem<Render>()->cameraVel += glm::vec2(0, -CAMERA_ACCEL_SPEED * dt);
-  }));
+    //initialize all values with on none
+    inputMap.insert_or_assign(i, InputButtonEvent::OnNone);
+  }
 
-  eventQueue.push_back(
-    std::make_pair(InputEvent{ InputEvents::KeyboardButton, SDL_SCANCODE_S },
-      [](float dt)
-      {
-        engine.GetSystem<Render>()->cameraVel += glm::vec2(0, CAMERA_ACCEL_SPEED * dt);
-      }));
 
-  eventQueue.push_back(
-    std::make_pair(InputEvent{ InputEvents::KeyboardButton, SDL_SCANCODE_A },
-      [](float dt)
-      {
-        engine.GetSystem<Render>()->cameraVel += glm::vec2(CAMERA_ACCEL_SPEED * dt,0);
-      }));
+  AddInputEvent(SDL_SCANCODE_W, InputButtonEvent::OnHold, [](float dt)
+    {
+      engine.GetSystem<Render>()->cameraVel += glm::vec2(0, -CAMERA_ACCEL_SPEED * dt);
+    });
 
-  eventQueue.push_back(
-    std::make_pair(InputEvent{ InputEvents::KeyboardButton, SDL_SCANCODE_D},
-      [](float dt)
-      {
-        engine.GetSystem<Render>()->cameraVel += glm::vec2(-CAMERA_ACCEL_SPEED * dt, 0);
-      }));
+  AddInputEvent(SDL_SCANCODE_S, InputButtonEvent::OnHold, [](float dt)
+    {
+      engine.GetSystem<Render>()->cameraVel += glm::vec2(0, CAMERA_ACCEL_SPEED * dt);
+    });
 
+
+  AddInputEvent(SDL_SCANCODE_A, InputButtonEvent::OnHold, [](float dt)
+    {
+      engine.GetSystem<Render>()->cameraVel += glm::vec2(CAMERA_ACCEL_SPEED * dt, 0);
+    });
+
+
+  AddInputEvent(SDL_SCANCODE_D, InputButtonEvent::OnHold, [](float dt)
+    {
+      engine.GetSystem<Render>()->cameraVel += glm::vec2(-CAMERA_ACCEL_SPEED * dt, 0);
+    });
+
+
+
+      
   /*
   if (event.key.keysym.scancode == SDL_SCANCODE_W)
   {
@@ -121,6 +121,21 @@ void InputManager::Update(float dt)
   engine.GetSystem<Render>()->objects.front()->GetComponent<Transform>()->
   SetScale({ 0.5f * 1.0f / engine.GetSystem<Render>()->cameraScale});
 
+
+
+  //Firstly update all the on release key's to onNone
+  for (auto& val : inputMap)
+  {
+    if(val.second == InputButtonEvent::OnRelease)
+    {
+      val.second = InputButtonEvent::OnNone;
+    }
+    else if (val.second == InputButtonEvent::OnPress)
+    {
+      val.second = InputButtonEvent::OnHold;
+    }
+  }
+
   //get event
   SDL_Event event;
   //while event queue is not empty pop off and deal with
@@ -163,9 +178,13 @@ void InputManager::Update(float dt)
 /*SDL_KeyboardEvent*/
   case SDL_KEYDOWN:
     {
-    inputEvents.push_back({ InputEvents::KeyboardButton, event.key.keysym.scancode });
+      //If the button was pressed last frame then it is now held
+      if(inputMap.at(static_cast<unsigned>(event.key.keysym.scancode)) == InputButtonEvent::OnRelease
+        || inputMap.at(static_cast<unsigned>(event.key.keysym.scancode)) == InputButtonEvent::OnNone)
+      {
+        inputMap.insert_or_assign(event.key.keysym.scancode, InputButtonEvent::OnPress);
 
-    
+      }
 
      
       //engine.GetSystem<Render>()->cameraPos =
@@ -173,6 +192,8 @@ void InputManager::Update(float dt)
     }
     break;
   case SDL_KEYUP:
+
+    inputMap.insert_or_assign(event.key.keysym.scancode, InputButtonEvent::OnRelease);
 
     break;
     
@@ -534,12 +555,56 @@ none, use .type
 
   //update internet settings
 
-  for (auto& inputEvent : eventQueue)
+
+
+  for (auto& input : inputMap)
   {
-    if (event.key.keysym.scancode == inputEvent.first.keycode)
+    if(input.second == InputButtonEvent::OnPress)
     {
-      inputEvent.second(dt);
+      std::cout << "Key: " << input.first << " Pressed " << std::endl;
+    }
+    else if (input.second == InputButtonEvent::OnRelease)
+    {
+      std::cout << "Key: " << input.first << " Released " << std::endl;
+    }
+    else if (input.second == InputButtonEvent::OnHold)
+    {
+      std::cout << "Key: " << input.first << " Held " << std::endl;
+    }
+
+    //If there are events to be managed for that key
+    if(inputEvents.find(input.first) != inputEvents.end())
+    {
+
+      //get a ref to the vector of functions to InputButtonEvents
+      auto& inputVector = inputEvents.at(input.first);
+
+      //for every function
+      for(auto& inputFunc: inputVector)
+      {
+        //if the input state of the key is the same as the state of the firing function
+        if(input.second == inputFunc.first)
+        {
+          //then call the function
+          inputFunc.second(dt);
+        }
+      }
     }
   }
+
+}
+
+void InputManager::AddInputEvent(int SDLScancode, InputButtonEvent eventType,  std::function<void(float)> func)
+{
+  //If there is no value at that location in the map
+  if(inputEvents.find(SDLScancode) == inputEvents.end())
+  {
+    //emplaces a new vector at the scancode
+    inputEvents.emplace(SDLScancode, std::vector<std::pair<InputButtonEvent, std::function<void(float)>>>());
+
+  }
+
+  //actually adds the value at the location with the event type and function
+  inputEvents.at(SDLScancode).push_back(std::make_pair(eventType, func));
 
 }
