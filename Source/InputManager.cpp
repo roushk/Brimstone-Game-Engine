@@ -26,28 +26,33 @@ InputManager::InputManager() : System()
   for(int i = 4; i < 285; ++i)
   {
     //initialize all values with on none
-    inputMap.insert_or_assign(i, InputButtonEvent::OnNone);
-    inputEvents.insert_or_assign(i, std::vector<std::pair<InputButtonEvent, std::function<void(float)>>>());
-
+    inputMapKeyboard.insert_or_assign(i, InputButtonEvent::OnNone);
+    inputKeyboardEvents.insert_or_assign(i, std::vector<std::pair<InputButtonEvent, std::function<void(float)>>>());
   }
 
+  for (int i = 1; i < 4; ++i)
+  {
+    //initialize all values with on none
+    inputMapMouse.insert_or_assign(i, InputMouseButtonEvent::OnNone);
+    inputMouseEvents.insert_or_assign(i, std::vector<std::pair<InputMouseButtonEvent, std::function<void(float)>>>());
+  }
 
-  AddInputEvent(SDL_SCANCODE_W, InputButtonEvent::OnHold, [](float dt)
+  AddKeyboardInputEvent(SDL_SCANCODE_W, InputButtonEvent::OnHold, [](float dt)
     {
       engine.GetSystem<Render>()->cameraVel += glm::vec2(0, -CAMERA_ACCEL_SPEED * dt);
     });
 
-  AddInputEvent(SDL_SCANCODE_S, InputButtonEvent::OnHold, [](float dt)
+  AddKeyboardInputEvent(SDL_SCANCODE_S, InputButtonEvent::OnHold, [](float dt)
     {
       engine.GetSystem<Render>()->cameraVel += glm::vec2(0, CAMERA_ACCEL_SPEED * dt);
     });
 
-  AddInputEvent(SDL_SCANCODE_A, InputButtonEvent::OnHold, [](float dt)
+  AddKeyboardInputEvent(SDL_SCANCODE_A, InputButtonEvent::OnHold, [](float dt)
     {
       engine.GetSystem<Render>()->cameraVel += glm::vec2(CAMERA_ACCEL_SPEED * dt, 0);
     });
 
-  AddInputEvent(SDL_SCANCODE_D, InputButtonEvent::OnHold, [](float dt)
+  AddKeyboardInputEvent(SDL_SCANCODE_D, InputButtonEvent::OnHold, [](float dt)
     {
       engine.GetSystem<Render>()->cameraVel += glm::vec2(-CAMERA_ACCEL_SPEED * dt, 0);
     });
@@ -124,7 +129,7 @@ void InputManager::Update(float dt)
 
 
   //Firstly update all the on release key's to onNone
-  for (auto& val : inputMap)
+  for (auto& val : inputMapKeyboard)
   {
     if(val.second == InputButtonEvent::OnRelease)
     {
@@ -133,6 +138,22 @@ void InputManager::Update(float dt)
     else if (val.second == InputButtonEvent::OnPress)
     {
       val.second = InputButtonEvent::OnHold;
+    }
+  }
+
+  for (auto& val : inputMapMouse)
+  {
+    if (val.second == InputMouseButtonEvent::OnRelease)
+    {
+      val.second = InputMouseButtonEvent::OnNone;
+    }
+    else if (val.second == InputMouseButtonEvent::OnPress)
+    {
+      val.second = InputMouseButtonEvent::OnHold;
+    }
+    else if (val.second == InputMouseButtonEvent::OnDoubleClick)
+    {
+      val.second = InputMouseButtonEvent::OnDoubleClickHold;
     }
   }
 
@@ -179,10 +200,10 @@ void InputManager::Update(float dt)
   case SDL_KEYDOWN:
     {
       //If the button was pressed last frame then it is now held
-      if(inputMap.at(static_cast<unsigned>(event.key.keysym.scancode)) == InputButtonEvent::OnRelease
-        || inputMap.at(static_cast<unsigned>(event.key.keysym.scancode)) == InputButtonEvent::OnNone)
+      if(inputMapKeyboard.at(static_cast<unsigned>(event.key.keysym.scancode)) == InputButtonEvent::OnRelease
+        || inputMapKeyboard.at(static_cast<unsigned>(event.key.keysym.scancode)) == InputButtonEvent::OnNone)
       {
-        inputMap.insert_or_assign(event.key.keysym.scancode, InputButtonEvent::OnPress);
+        inputMapKeyboard.insert_or_assign(event.key.keysym.scancode, InputButtonEvent::OnPress);
 
       }
 
@@ -192,15 +213,29 @@ void InputManager::Update(float dt)
     }
     break;
   case SDL_KEYUP:
+    {
+      
+    inputMapKeyboard.insert_or_assign(event.key.keysym.scancode, InputButtonEvent::OnRelease);
 
-    inputMap.insert_or_assign(event.key.keysym.scancode, InputButtonEvent::OnRelease);
-
+    }
     break;
     
 /*SDL_MouseButtonEvent*/
   case SDL_MOUSEBUTTONDOWN:
   {
 
+    if (inputMapMouse.at(event.button.button) == InputMouseButtonEvent::OnRelease
+      || inputMapMouse.at(event.button.button) == InputMouseButtonEvent::OnNone)
+    {
+      if(event.button.clicks == 1)
+      {
+        inputMapMouse.insert_or_assign(event.button.button, InputMouseButtonEvent::OnPress);
+      }
+      else if (event.button.clicks == 2)
+      {
+        inputMapMouse.insert_or_assign(event.button.button, InputMouseButtonEvent::OnDoubleClick);
+      }
+    }
 
     if(event.button.button == SDL_BUTTON_RIGHT && event.button.clicks == 1)
     {
@@ -245,6 +280,8 @@ void InputManager::Update(float dt)
     break;
   case SDL_MOUSEBUTTONUP:
   {
+    inputMapMouse.insert_or_assign(event.button.button, InputMouseButtonEvent::OnRelease);
+
     //Drag select
     if (event.button.button == SDL_BUTTON_LEFT 
       && event.button.state == SDL_RELEASED)
@@ -555,9 +592,7 @@ none, use .type
 
   //update internet settings
 
-
-
-  for (auto& input : inputMap)
+  for (auto& input : inputMapKeyboard)
   {
     
     if(input.second == InputButtonEvent::OnPress)
@@ -578,7 +613,7 @@ none, use .type
     //get a ref to the vector of functions to InputButtonEvents
     
     //for every function
-    for(auto& inputFunc: inputEvents.at(input.first))
+    for(auto& inputFunc: inputKeyboardEvents.at(input.first))
     {
       //if the input state of the key is the same as the state of the firing function
       if(input.second == inputFunc.first)
@@ -586,14 +621,59 @@ none, use .type
         //then call the function
         inputFunc.second(dt);
       }
-    
     }
   }
 
+  //Mouse input
+  for (auto& input : inputMapMouse)
+  {
+
+    if (input.second == InputMouseButtonEvent::OnPress)
+    {
+      std::cout << "Mouse Button: " << input.first << " Pressed " << std::endl;
+    }
+    else if (input.second == InputMouseButtonEvent::OnHold)
+    {
+      std::cout << "Mouse Button: " << input.first << " Held " << std::endl;
+    }
+    else if (input.second == InputMouseButtonEvent::OnRelease)
+    {
+      std::cout << "Mouse Button: " << input.first << " Released " << std::endl;
+    }
+    else if (input.second == InputMouseButtonEvent::OnDoubleClick)
+    {
+      std::cout << "Mouse Button: " << input.first << " Double Click " << std::endl;
+    }
+    else if (input.second == InputMouseButtonEvent::OnDoubleClickHold)
+    {
+      std::cout << "Mouse Button: " << input.first << " Double Click Held " << std::endl;
+    }
+
+    //If there are events to be managed for that key
+
+    //get a ref to the vector of functions to InputButtonEvents
+
+    //for every function
+    for (auto& inputFunc : inputMouseEvents.at(input.first))
+    {
+      //if the input state of the key is the same as the state of the firing function
+      if (input.second == inputFunc.first)
+      {
+        //then call the function
+        inputFunc.second(dt);
+      }
+    }
+  }
 }
 
-void InputManager::AddInputEvent(int SDLScancode, InputButtonEvent eventType,  std::function<void(float)> func)
+void InputManager::AddKeyboardInputEvent(int SDLScancode, InputButtonEvent eventType,  std::function<void(float)> func)
 {
   //actually adds the value at the location with the event type and function
-  inputEvents.at(SDLScancode).push_back(std::make_pair(eventType, func));
+  inputKeyboardEvents.at(SDLScancode).push_back(std::make_pair(eventType, func));
+}
+
+void InputManager::AddMouseInputEvent(int SDLScancode, InputMouseButtonEvent eventType, std::function<void(float)> func)
+{
+  //actually adds the value at the location with the event type and function
+  inputMouseEvents.at(SDLScancode).push_back(std::make_pair(eventType, func));
 }

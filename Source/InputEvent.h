@@ -8,15 +8,6 @@
 #define INPUT_EVENT_H
 
 
-enum class InputEventType
-{
-  MouseButton,    //clicking button
-  KeyboardButton,         //keyboard/controller down
-  MouseMovement,  //mouse movement
-  OutOfBounds
-};
-
-
 enum class InputButtonEvent
 {
   OnNone,       //Key is untouched this frame or last frame, default state
@@ -26,6 +17,20 @@ enum class InputButtonEvent
   OutOfBounds
 };
 
+
+enum class InputMouseButtonEvent
+{
+  OnNone,             //Mouse button is untouched this frame or last frame, default state
+  OnPress,            //Mouse button is clicked
+  OnHold,             //Mouse button is held down
+  OnRelease,          //Mouse button is released
+  OnDoubleClick,      //Mouse button is double clicked
+  OnDoubleClickHold,  //Mouse button is double clicked and held down
+  OutOfBounds
+};
+
+
+/*
 
 class InputEvent
 {
@@ -44,6 +49,7 @@ public:
   //keycode if using key
   int keycode = 0;  //Using SDKL_KEY NOT SDL_SCANCODE_KEY
 };
+*/
 
 
 #endif
