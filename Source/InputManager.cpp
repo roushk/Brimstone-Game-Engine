@@ -27,6 +27,8 @@ InputManager::InputManager() : System()
   {
     //initialize all values with on none
     inputMap.insert_or_assign(i, InputButtonEvent::OnNone);
+    inputEvents.insert_or_assign(i, std::vector<std::pair<InputButtonEvent, std::function<void(float)>>>());
+
   }
 
 
@@ -40,12 +42,10 @@ InputManager::InputManager() : System()
       engine.GetSystem<Render>()->cameraVel += glm::vec2(0, CAMERA_ACCEL_SPEED * dt);
     });
 
-
   AddInputEvent(SDL_SCANCODE_A, InputButtonEvent::OnHold, [](float dt)
     {
       engine.GetSystem<Render>()->cameraVel += glm::vec2(CAMERA_ACCEL_SPEED * dt, 0);
     });
-
 
   AddInputEvent(SDL_SCANCODE_D, InputButtonEvent::OnHold, [](float dt)
     {
@@ -559,6 +559,7 @@ none, use .type
 
   for (auto& input : inputMap)
   {
+    
     if(input.second == InputButtonEvent::OnPress)
     {
       std::cout << "Key: " << input.first << " Pressed " << std::endl;
@@ -573,22 +574,19 @@ none, use .type
     }
 
     //If there are events to be managed for that key
-    if(inputEvents.find(input.first) != inputEvents.end())
+
+    //get a ref to the vector of functions to InputButtonEvents
+    
+    //for every function
+    for(auto& inputFunc: inputEvents.at(input.first))
     {
-
-      //get a ref to the vector of functions to InputButtonEvents
-      auto& inputVector = inputEvents.at(input.first);
-
-      //for every function
-      for(auto& inputFunc: inputVector)
+      //if the input state of the key is the same as the state of the firing function
+      if(input.second == inputFunc.first)
       {
-        //if the input state of the key is the same as the state of the firing function
-        if(input.second == inputFunc.first)
-        {
-          //then call the function
-          inputFunc.second(dt);
-        }
+        //then call the function
+        inputFunc.second(dt);
       }
+    
     }
   }
 
@@ -596,15 +594,6 @@ none, use .type
 
 void InputManager::AddInputEvent(int SDLScancode, InputButtonEvent eventType,  std::function<void(float)> func)
 {
-  //If there is no value at that location in the map
-  if(inputEvents.find(SDLScancode) == inputEvents.end())
-  {
-    //emplaces a new vector at the scancode
-    inputEvents.emplace(SDLScancode, std::vector<std::pair<InputButtonEvent, std::function<void(float)>>>());
-
-  }
-
   //actually adds the value at the location with the event type and function
   inputEvents.at(SDLScancode).push_back(std::make_pair(eventType, func));
-
 }
