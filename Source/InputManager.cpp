@@ -594,7 +594,7 @@ none, use .type
 
   for (auto& input : inputMapKeyboard)
   {
-    
+    /*
     if(input.second == InputButtonEvent::OnPress)
     {
       std::cout << "Key: " << input.first << " Pressed " << std::endl;
@@ -607,7 +607,7 @@ none, use .type
     {
       std::cout << "Key: " << input.first << " Held " << std::endl;
     }
-
+    */
     //If there are events to be managed for that key
 
     //get a ref to the vector of functions to InputButtonEvents
@@ -627,7 +627,7 @@ none, use .type
   //Mouse input
   for (auto& input : inputMapMouse)
   {
-
+    /*
     if (input.second == InputMouseButtonEvent::OnPress)
     {
       std::cout << "Mouse Button: " << input.first << " Pressed " << std::endl;
@@ -648,7 +648,7 @@ none, use .type
     {
       std::cout << "Mouse Button: " << input.first << " Double Click Held " << std::endl;
     }
-
+    */
     //If there are events to be managed for that key
 
     //get a ref to the vector of functions to InputButtonEvents
