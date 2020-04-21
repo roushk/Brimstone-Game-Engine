@@ -58,6 +58,7 @@ void UtilityAI::Update(float dt)
     GetClosestFufillment(highestPriorityNeed);
     canWork = false;
     currentState = "Found Need";
+
     if(isWorking)
     {
       ResetJob();
@@ -109,7 +110,7 @@ void UtilityAI::GetClosestFufillment(Need need)
   auto result = pather->compute_path(parentAstar->request);
   if(result == PathResult::IMPOSSIBLE)
   {
-    currentState = "PATH IMPOSSIBLE BIG OOF";
+    currentState = "PATH IMPOSSIBLE";
   }
 }
 
