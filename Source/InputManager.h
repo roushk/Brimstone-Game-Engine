@@ -15,8 +15,8 @@
 #define GLM_ENABLE_EXPERIMENTAL
 
 #include <glm/gtx/transform.hpp>
-
-
+#include "InputEvent.h"
+#include <functional>
 
 
 class InputManager: public System
@@ -28,11 +28,26 @@ public:
   void Update(float dt) override;
   static const SystemTypes type = SystemTypes::InputManager;
 
-  
-  //std::queue<InputEvent> inputEvents;
+  //SDL_SCANCODE_KEY to current status of the key
+  //saves the key so to check the input only need to access the SDL_SCANCODE
+  //of the key into the map and check the value
+  //ranged 4 to 284
+  std::map<int, InputButtonEvent> inputMapKeyboard;
+
+
+  //value 1 = mouse button left
+  //value 2 = mouse button right
+  //value 3 = mouse button middle
+  std::map<int, InputMouseButtonEvent> inputMapMouse;
+
+  //map of keycodes to a vector of events which are a pair of button event type to function
+  std::map<int, std::vector<std::pair<InputButtonEvent, std::function<void(float)>>>> inputKeyboardEvents;
+  void AddKeyboardInputEvent(int SDLScancode, InputButtonEvent eventType, std::function<void(float)> func);
+
+  std::map<int, std::vector<std::pair<InputMouseButtonEvent, std::function<void(float)>>>> inputMouseEvents;
+  void AddMouseInputEvent(int SDLScancode, InputMouseButtonEvent eventType, std::function<void(float)> func);
 
   glm::vec2 screenSize;
-
   glm::vec2 mouseNDC;
   glm::vec2 mouseScreenCoords;
   glm::vec2 mouseWorldCoords;
@@ -49,6 +64,7 @@ public:
   std::vector<GameObject*> selected;
   Map* map;
   AStarPather pather;
+  float cameraAccelSpeed = 10.0f;
 
 };
 

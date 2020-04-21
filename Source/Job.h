@@ -23,6 +23,7 @@ struct JobData
   GameObject* jobGoal = nullptr;
   float timeToFinish = 1.0f;
   float totalTimeToFinish = 1.0f;
+  float percentage = 0.0f;
   bool complete = false;
 
   /*

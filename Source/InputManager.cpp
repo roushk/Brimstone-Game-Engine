@@ -9,6 +9,7 @@
 
 #define GLM_ENABLE_EXPERIMENTAL
 
+#define CAMERA_ACCEL_SPEED 1000
 #include <glm/gtx/transform.hpp>
 
 
@@ -20,10 +21,72 @@ InputManager::InputManager() : System()
     (engine.GetSystem<Render>()->worldScale) / screenSize.x, 
     (engine.GetSystem<Render>()->worldScale) / screenSize.y, 1));
   aspect = screenSize.x / screenSize.y;
+
+
+  for(int i = 4; i < 285; ++i)
+  {
+    //initialize all values with on none
+    inputMapKeyboard.insert_or_assign(i, InputButtonEvent::OnNone);
+    inputKeyboardEvents.insert_or_assign(i, std::vector<std::pair<InputButtonEvent, std::function<void(float)>>>());
+  }
+
+  for (int i = 1; i < 4; ++i)
+  {
+    //initialize all values with on none
+    inputMapMouse.insert_or_assign(i, InputMouseButtonEvent::OnNone);
+    inputMouseEvents.insert_or_assign(i, std::vector<std::pair<InputMouseButtonEvent, std::function<void(float)>>>());
+  }
+
+  AddKeyboardInputEvent(SDL_SCANCODE_W, InputButtonEvent::OnHold, [](float dt)
+    {
+      engine.GetSystem<Render>()->cameraVel += glm::vec2(0, -CAMERA_ACCEL_SPEED * dt);
+    });
+
+  AddKeyboardInputEvent(SDL_SCANCODE_S, InputButtonEvent::OnHold, [](float dt)
+    {
+      engine.GetSystem<Render>()->cameraVel += glm::vec2(0, CAMERA_ACCEL_SPEED * dt);
+    });
+
+  AddKeyboardInputEvent(SDL_SCANCODE_A, InputButtonEvent::OnHold, [](float dt)
+    {
+      engine.GetSystem<Render>()->cameraVel += glm::vec2(CAMERA_ACCEL_SPEED * dt, 0);
+    });
+
+  AddKeyboardInputEvent(SDL_SCANCODE_D, InputButtonEvent::OnHold, [](float dt)
+    {
+      engine.GetSystem<Render>()->cameraVel += glm::vec2(-CAMERA_ACCEL_SPEED * dt, 0);
+    });
+
+
+
+      
+  /*
+  if (event.key.keysym.scancode == SDL_SCANCODE_W)
+  {
+    //eventQueue.push_back(InputEvent{ InputEvents::KeyboardButton, SDLK_w });
+  }
+  if (event.key.keysym.scancode == SDL_SCANCODE_A)
+  {
+    //eventQueue.push_back(InputEvent{ InputEvents::KeyboardButton, SDLK_a });
+
+    engine.GetSystem<Render>()->cameraVel += glm::vec2(cameraAccelSpeed, 0);
+  }
+  if (event.key.keysym.scancode == SDL_SCANCODE_S)
+  {
+    engine.GetSystem<Render>()->cameraVel += glm::vec2(0, cameraAccelSpeed);
+  }
+  if (event.key.keysym.scancode == SDL_SCANCODE_D)
+  {
+    engine.GetSystem<Render>()->cameraVel += glm::vec2(-cameraAccelSpeed, 0);
+  }
+
+  */
 }
 
 InputManager::~InputManager()
 {
+
+
 }
 
 void InputManager::Update(float dt)
@@ -63,6 +126,37 @@ void InputManager::Update(float dt)
   engine.GetSystem<Render>()->objects.front()->GetComponent<Transform>()->
   SetScale({ 0.5f * 1.0f / engine.GetSystem<Render>()->cameraScale});
 
+
+
+  //Firstly update all the on release key's to onNone
+  for (auto& val : inputMapKeyboard)
+  {
+    if(val.second == InputButtonEvent::OnRelease)
+    {
+      val.second = InputButtonEvent::OnNone;
+    }
+    else if (val.second == InputButtonEvent::OnPress)
+    {
+      val.second = InputButtonEvent::OnHold;
+    }
+  }
+
+  for (auto& val : inputMapMouse)
+  {
+    if (val.second == InputMouseButtonEvent::OnRelease)
+    {
+      val.second = InputMouseButtonEvent::OnNone;
+    }
+    else if (val.second == InputMouseButtonEvent::OnPress)
+    {
+      val.second = InputMouseButtonEvent::OnHold;
+    }
+    else if (val.second == InputMouseButtonEvent::OnDoubleClick)
+    {
+      val.second = InputMouseButtonEvent::OnDoubleClickHold;
+    }
+  }
+
   //get event
   SDL_Event event;
   //while event queue is not empty pop off and deal with
@@ -76,7 +170,7 @@ void InputManager::Update(float dt)
   //if you press the close button the game shutsdown the engine
   case SDL_QUIT:
     {
-    engine.Stop();
+      engine.Stop();
     }
     break;
 
@@ -105,37 +199,43 @@ void InputManager::Update(float dt)
 /*SDL_KeyboardEvent*/
   case SDL_KEYDOWN:
     {
-    
-      float cameraAccelSpeed = 10.0f;
+      //If the button was pressed last frame then it is now held
+      if(inputMapKeyboard.at(static_cast<unsigned>(event.key.keysym.scancode)) == InputButtonEvent::OnRelease
+        || inputMapKeyboard.at(static_cast<unsigned>(event.key.keysym.scancode)) == InputButtonEvent::OnNone)
+      {
+        inputMapKeyboard.insert_or_assign(event.key.keysym.scancode, InputButtonEvent::OnPress);
 
-      if(event.key.keysym.scancode == SDL_SCANCODE_W)
-      {
-        engine.GetSystem<Render>()->cameraVel += glm::vec2(0, -cameraAccelSpeed);
       }
-      if (event.key.keysym.scancode == SDL_SCANCODE_A)
-      {
-        engine.GetSystem<Render>()->cameraVel += glm::vec2(cameraAccelSpeed, 0);
-      }
-      if (event.key.keysym.scancode == SDL_SCANCODE_S)
-      {
-        engine.GetSystem<Render>()->cameraVel += glm::vec2(0, cameraAccelSpeed);
-      }
-      if (event.key.keysym.scancode == SDL_SCANCODE_D)
-      {
-        engine.GetSystem<Render>()->cameraVel += glm::vec2(-cameraAccelSpeed, 0);
-      }
+
+     
       //engine.GetSystem<Render>()->cameraPos =
       //  glm::translate(engine.GetSystem<Render>()->cameraPos, glm::vec3(cameraPos, 0));
     }
     break;
   case SDL_KEYUP:
+    {
+      
+    inputMapKeyboard.insert_or_assign(event.key.keysym.scancode, InputButtonEvent::OnRelease);
 
+    }
     break;
     
 /*SDL_MouseButtonEvent*/
   case SDL_MOUSEBUTTONDOWN:
   {
 
+    if (inputMapMouse.at(event.button.button) == InputMouseButtonEvent::OnRelease
+      || inputMapMouse.at(event.button.button) == InputMouseButtonEvent::OnNone)
+    {
+      if(event.button.clicks == 1)
+      {
+        inputMapMouse.insert_or_assign(event.button.button, InputMouseButtonEvent::OnPress);
+      }
+      else if (event.button.clicks == 2)
+      {
+        inputMapMouse.insert_or_assign(event.button.button, InputMouseButtonEvent::OnDoubleClick);
+      }
+    }
 
     if(event.button.button == SDL_BUTTON_RIGHT && event.button.clicks == 1)
     {
@@ -180,6 +280,8 @@ void InputManager::Update(float dt)
     break;
   case SDL_MOUSEBUTTONUP:
   {
+    inputMapMouse.insert_or_assign(event.button.button, InputMouseButtonEvent::OnRelease);
+
     //Drag select
     if (event.button.button == SDL_BUTTON_LEFT 
       && event.button.state == SDL_RELEASED)
@@ -202,6 +304,7 @@ void InputManager::Update(float dt)
         minPoint = mouseWorldCoords - glm::vec2(boxRadius);
         maxPoint = mouseWorldCoords + glm::vec2(boxRadius);
       }
+      
 
       float dist = glm::distance(mouseWorldCoords, maxPoint);
       GameObject* object = nullptr;
@@ -489,5 +592,88 @@ none, use .type
 
   //update internet settings
 
+  for (auto& input : inputMapKeyboard)
+  {
+    
+    if(input.second == InputButtonEvent::OnPress)
+    {
+      std::cout << "Key: " << input.first << " Pressed " << std::endl;
+    }
+    else if (input.second == InputButtonEvent::OnRelease)
+    {
+      std::cout << "Key: " << input.first << " Released " << std::endl;
+    }
+    else if (input.second == InputButtonEvent::OnHold)
+    {
+      std::cout << "Key: " << input.first << " Held " << std::endl;
+    }
 
+    //If there are events to be managed for that key
+
+    //get a ref to the vector of functions to InputButtonEvents
+    
+    //for every function
+    for(auto& inputFunc: inputKeyboardEvents.at(input.first))
+    {
+      //if the input state of the key is the same as the state of the firing function
+      if(input.second == inputFunc.first)
+      {
+        //then call the function
+        inputFunc.second(dt);
+      }
+    }
+  }
+
+  //Mouse input
+  for (auto& input : inputMapMouse)
+  {
+
+    if (input.second == InputMouseButtonEvent::OnPress)
+    {
+      std::cout << "Mouse Button: " << input.first << " Pressed " << std::endl;
+    }
+    else if (input.second == InputMouseButtonEvent::OnHold)
+    {
+      std::cout << "Mouse Button: " << input.first << " Held " << std::endl;
+    }
+    else if (input.second == InputMouseButtonEvent::OnRelease)
+    {
+      std::cout << "Mouse Button: " << input.first << " Released " << std::endl;
+    }
+    else if (input.second == InputMouseButtonEvent::OnDoubleClick)
+    {
+      std::cout << "Mouse Button: " << input.first << " Double Click " << std::endl;
+    }
+    else if (input.second == InputMouseButtonEvent::OnDoubleClickHold)
+    {
+      std::cout << "Mouse Button: " << input.first << " Double Click Held " << std::endl;
+    }
+
+    //If there are events to be managed for that key
+
+    //get a ref to the vector of functions to InputButtonEvents
+
+    //for every function
+    for (auto& inputFunc : inputMouseEvents.at(input.first))
+    {
+      //if the input state of the key is the same as the state of the firing function
+      if (input.second == inputFunc.first)
+      {
+        //then call the function
+        inputFunc.second(dt);
+      }
+    }
+  }
+}
+
+void InputManager::AddKeyboardInputEvent(int SDLScancode, InputButtonEvent eventType,  std::function<void(float)> func)
+{
+  //actually adds the value at the location with the event type and function
+  inputKeyboardEvents.at(SDLScancode).push_back(std::make_pair(eventType, func));
+}
+
+void InputManager::AddMouseInputEvent(int SDLScancode, InputMouseButtonEvent eventType, std::function<void(float)> func)
+{
+  //actually adds the value at the location with the event type and function
+  inputMouseEvents.at(SDLScancode).push_back(std::make_pair(eventType, func));
 }
