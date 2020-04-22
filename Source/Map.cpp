@@ -238,9 +238,6 @@ void Map::GenerateMaze(MazeGenerationMethod method)
     //Add the walls of the cell to the wall list.
     AppendVector(wallList, GetAdjacentWalls({ 1,1 }));
 
-    //adding wall list to the visited list
-    AppendVector(visited, wallList);
-
     //adding maze list to the visited list
     AppendVector(visited, mazeList);
 
@@ -284,7 +281,7 @@ void Map::GenerateMaze(MazeGenerationMethod method)
       }
 
       //If only one of the two cells that the wall divides is visited, then
-      if(adjacentVisited == 1)
+      if(adjacentVisited < 2)
       {
         /*
           Make the wall a passage and mark the unvisited cell as part of the maze.
@@ -346,7 +343,8 @@ void Map::GenerateMaze(MazeGenerationMethod method)
         data[i][j].GetComponent<Transform>()->SetScale({ 0.5f, 0.5f });
         data[i][j].GetComponent<Transform>()->SetTranslation({ i, j });
 
-        if(primsMap[i][j].type == PrimsNodeType::Wall)
+        if(primsMap[i][j].type == PrimsNodeType::Wall || 
+          primsMap[i][j].type == PrimsNodeType::Unchecked)
         {
           data[i][j].type = MapNodeTypes::Object;
           data[i][j].GetComponent<Sprite>()->SetTexure("Wall1");
