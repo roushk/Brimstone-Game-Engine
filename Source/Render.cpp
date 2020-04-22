@@ -83,6 +83,8 @@ void Render::DrawGameObjects(const float dt)
     //indexes into the vector of vectors and draws each object
     for (auto & object : engine.GetSystem<AssetManager>()->GetObjectTextureList().at(texture->ID))
     {
+      if (object->HasComponent<Sprite>() == false)
+        continue;
       if (standardUV == false && object->GetComponent<Sprite>()->standardUV == true)
       {
         LoadUVs(*object);

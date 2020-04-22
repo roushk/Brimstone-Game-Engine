@@ -20,6 +20,7 @@ enum class SystemTypes
   InputManager,
   CollisionManager,
   UtilityAiSystem,
+  MapManager,
   OutOfBounds
 };
 
@@ -61,12 +62,15 @@ public:
     isRunning = false;
   }
 
+  //adds a system to the engine
   template <class SystemType>
   void AddSystem(System* system)
   {
     systems[static_cast<unsigned>(SystemType::type)] = system;
   };
 
+
+  //gets the system
   template <class SystemType>
   inline typename std::enable_if<std::is_base_of<System, SystemType>::value,
     SystemType*>::type GetSystem()

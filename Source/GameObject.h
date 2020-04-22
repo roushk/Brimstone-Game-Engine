@@ -20,10 +20,12 @@ class GameObject
   friend ComponentManager;
 public:
   virtual ~GameObject() = default;
+
   //Automatically adds Sprite and Transform to GameObject because every object needs these two
   GameObject(): ID(NextGameObjectID++) 
   { AddComponent<Sprite>(); AddComponent<Transform>(); };
 
+  //void DestroyGameObject(); //removes all components
   GameObject& operator=(const GameObject & rhs);
 
   virtual void Update(float dt);
@@ -56,7 +58,7 @@ public:
   }
 
   template <typename ComponentType>
-  void RemoveComponent() const
+  void RemoveComponent() const //removed const for game object dtor
   {
     engine.GetSystem<ComponentManager>()->RemoveComponent<ComponentType>(this);
 

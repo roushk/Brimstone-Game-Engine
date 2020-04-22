@@ -318,6 +318,7 @@
     <ClInclude Include="Source\Job.h" />
     <ClInclude Include="Source\Level.h" />
     <ClInclude Include="Source\Map.h" />
+    <ClInclude Include="Source\MapManager.h" />
     <ClInclude Include="Source\Need.h" />
     <ClInclude Include="Source\ParticleManager.h" />
     <ClInclude Include="Source\Pathfinding.h" />
@@ -398,6 +399,7 @@
     <ClCompile Include="Source\InputManager.cpp" />
     <ClCompile Include="Source\Level.cpp" />
     <ClCompile Include="Source\Map.cpp" />
+    <ClCompile Include="Source\MapManager.cpp" />
     <ClCompile Include="Source\Pathfinding.cpp" />
     <ClCompile Include="Source\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

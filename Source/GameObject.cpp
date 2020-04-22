@@ -1,5 +1,44 @@
 #include "pch.h"
 
+/*
+void GameObject::DestroyGameObject()
+{
+  if (HasComponent<Sprite>()) //std::unique_ptr operator bool returns if object
+  {
+    RemoveComponent<Sprite>();
+  }
+  if (HasComponent<Transform>()) //std::unique_ptr operator bool returns if object
+  {
+    RemoveComponent<Transform>();
+  }
+  if (HasComponent<Physics>()) //std::unique_ptr operator bool returns if object
+  {
+    RemoveComponent<Physics>();
+  }
+  if (HasComponent<BasicBehavior>()) //std::unique_ptr operator bool returns if object
+  {
+    RemoveComponent<BasicBehavior>();
+  }
+  if (HasComponent<Collider>()) //std::unique_ptr operator bool returns if object
+  {
+    RemoveComponent<Collider>();
+  }
+  if (HasComponent<AI>()) //std::unique_ptr operator bool returns if object
+  {
+    RemoveComponent<AI>();
+  }
+  if (HasComponent<UtilityAI>()) //std::unique_ptr operator bool returns if object
+  {
+    RemoveComponent<UtilityAI>();
+  }
+  if (HasComponent<ParticleManager>()) //std::unique_ptr operator bool returns if object
+  {
+    RemoveComponent<ParticleManager>();
+  }
+  
+}
+*/
+
 GameObject& GameObject::operator=(const GameObject & rhs) 
 {
   ID = NextGameObjectID++;

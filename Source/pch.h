@@ -57,4 +57,7 @@
 #include "PointContainment2D.h"
 #include "UtilityAi.h"
 #include "Job.h"
+#include "MapManager.h"
+
+
 

@@ -80,6 +80,20 @@ Map::Map(std::string& file_string)
   }
 }
 
+
+/*
+Map::~Map()
+{
+  for (unsigned i = 0; i < data.size(); ++i)
+  {
+    for (int j = 0; j < data[i].size(); ++j)
+    {
+      data[i][j].DestroyGameObject();
+    }
+  }
+}
+*/
+
 //??? I assume its for serialization but no idea why it takes a map when its a method
 void Map::SaveMap(Map &map)
 {

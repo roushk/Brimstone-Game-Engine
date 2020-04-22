@@ -9,15 +9,28 @@ void GUI::DrawGui(float dt)
 {
   UNREFERENCED_PARAMETER(dt);
 
-  ImGui::Begin("Editor", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize); // ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+  
+  ImGui::Begin("Editor", nullptr); // ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
   ImGui::Spacing();
   static ImVec2 windowScale = { 350.0f, static_cast<float>(engine.GetSystem<ImGuiManager>()->window->height) };
   static ImVec2 windowPosition{0.0f,0.0f};
   ImGui::SetWindowPos(windowPosition); //top left
   ImGui::SetWindowSize(windowScale);
 
+
+  if(ImGui::Button("GenerateMap"))
+  {
+    engine.GetSystem<MapManager>()->GenerateMapLive(MazeGenerationMethod::RandomizedPrims);
+  }
+  //swap width and height
+  ImGui::SliderInt("Map Dimensions", &engine.GetSystem<MapManager>()->newWidth, 1, 1000);
+  engine.GetSystem<MapManager>()->newHeight = engine.GetSystem<MapManager>()->newWidth;
+
   ImGui::PushItemWidth(-1);
   ImGui::Text("ObjectList");
+
+
+
   //Temp code until gamespaces are completed
   //static glm::vec2 objPos = engine.GetSystem<Render>()->objects.front()->GetComponent<Transform>()->GetTranslation();
   //ImGui::SliderFloat3("ObjPos", glm::value_ptr(objPos), -1, 1);

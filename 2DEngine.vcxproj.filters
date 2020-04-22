@@ -243,6 +243,9 @@
     <ClInclude Include="Source\PointContainment2D.h">
       <Filter>Source Files\Systems\Collision Detection</Filter>
     </ClInclude>
+    <ClInclude Include="Source\MapManager.h">
+      <Filter>Source Files\Systems\Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\2.5D Engine.cpp">
@@ -343,6 +346,9 @@
     </ClCompile>
     <ClCompile Include="Source\PointContainment2D.cpp">
       <Filter>Source Files\Systems\Collision Detection</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MapManager.cpp">
+      <Filter>Source Files\Systems\Map</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
