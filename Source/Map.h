@@ -6,6 +6,17 @@
 #include <glm.hpp>
 #include "GameObject.h"
 
+
+
+//TODO move this to a Vector Tools .h file
+template <typename T>
+void AppendVector(std::vector<T>& toAppendTo, const std::vector<T>& toAppendFrom)
+{
+  toAppendTo.insert(toAppendTo.end(), toAppendFrom.begin(), toAppendFrom.end());
+
+}
+
+
 struct GridPos
 {
   int row;
@@ -36,6 +47,9 @@ enum class MazeGenerationMethod
 
 };
 
+//we are using the NodeCoord
+typedef std::pair<int, int> NodeCoord;
+
 class MapNode : public GameObject
 {
 public:
@@ -53,6 +67,25 @@ public:
   //glm::uvec2 pos;
 };
 
+enum class PrimsNodeType
+{
+  Unchecked,
+  Wall,
+  Floor
+};
+
+
+class PrimsNode
+{
+  
+  int x = 0;
+  int y = 0;
+  PrimsNodeType type = PrimsNodeType::Unchecked;
+
+};
+
+
+
 class Map
 {
 public:
@@ -68,6 +101,56 @@ public:
     setOffset(pos.x, pos.y);
   }
 
+
+  std::vector<NodeCoord> GetAdjacent(const NodeCoord& node)
+  {
+    std::vector<NodeCoord> walls;
+    //check edges
+    if(node.first > 0)
+    {
+      walls.push_back({ node.first - 1, node.second });
+    }
+    if (node.second > 0)
+    {
+      walls.push_back({ node.first, node.second - 1 });
+    }
+    if (node.first < width - 1)
+    {
+      walls.push_back({ node.first + 1, node.second });
+    }
+    if (node.second < height - 1)
+    {
+      walls.push_back({ node.first, node.second + 1 });
+    }
+    return walls;
+  }
+
+
+  std::vector<NodeCoord> GetAdjacentWalls(const NodeCoord& node)
+  {
+    std::vector<NodeCoord> walls;
+    //check edges
+    if (node.first > 0)
+    {
+      walls.push_back({ node.first - 1, node.second });
+    }
+    if (node.second > 0)
+    {
+      walls.push_back({ node.first, node.second - 1 });
+    }
+    if (node.first < width - 1)
+    {
+      walls.push_back({ node.first + 1, node.second });
+    }
+    if (node.second < height - 1)
+    {
+      walls.push_back({ node.first, node.second + 1 });
+    }
+    return walls;
+  }
+
+
+  
   //Create an Iterate Over Every Grid func that passes a func over every 
   //grid pos and gives the func the x,y, grid space of the current position
   void setOffset(float x, float y)
@@ -106,6 +189,8 @@ public:
   {
     return data[x][y];
   }
+
+
 
 
   std::string name = "MapName";
