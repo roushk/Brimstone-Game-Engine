@@ -23,7 +23,7 @@ void GUI::DrawGui(float dt)
     engine.GetSystem<MapManager>()->GenerateMapLive(MazeGenerationMethod::RandomizedPrims);
   }
   //swap width and height
-  ImGui::SliderInt("Map Dimensions", &engine.GetSystem<MapManager>()->newWidth, 1, 1000);
+  ImGui::SliderInt("Map Dimensions", &engine.GetSystem<MapManager>()->newWidth, 1, 250);
   engine.GetSystem<MapManager>()->newHeight = engine.GetSystem<MapManager>()->newWidth;
 
   ImGui::PushItemWidth(-1);
