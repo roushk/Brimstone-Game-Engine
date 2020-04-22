@@ -48,7 +48,7 @@ Map::Map(std::string& file_string)
     for (unsigned j = 0; j < height; ++j)
     {
       MapNode node;
-      node.type = file.at(j * height + i ) - 48;
+      node.type = static_cast<MapNodeTypes>(file.at(j * height + i ) - 48);
       nodes.push_back(node);
       
     }
@@ -65,14 +65,14 @@ Map::Map(std::string& file_string)
       data[i][j].GetComponent<Transform>()->SetScale({ 0.5f, 0.5f });
       data[i][j].GetComponent<Transform>()->SetTranslation({ i, j });
       data[i][j].SetLayer(GameObjectLayer::Floor);
-      if(data[i][j].type == mntGround)
+      if(data[i][j].type == MapNodeTypes::Ground)
       {
         std::string grass = "grass";
         grass += std::to_string(RandomValue(0, 2));
         data[i][j].GetComponent<Sprite>()->SetTexure(grass);
         
       }
-      else if (data[i][j].type == mntObject)
+      else if (data[i][j].type == MapNodeTypes::Object)
       {
         data[i][j].GetComponent<Sprite>()->SetTexure("Wall1");
       }
@@ -80,12 +80,15 @@ Map::Map(std::string& file_string)
   }
 }
 
+//???
 void Map::SaveMap(Map &map)
 {
 
 }
 
 
+
+//Generates of size X by Y and reserves the data for the map
 Map::Map(unsigned xSize, unsigned ySize) : height(ySize), width(xSize)
 {
 
@@ -106,6 +109,8 @@ Map::Map(unsigned xSize, unsigned ySize) : height(ySize), width(xSize)
 
 }
 
+
+//Gets the grid position of a world coordinate
 GridPos Map::get_grid_position(const glm::vec2& worldPos) const
 {
   const int row = static_cast<int>((worldPos.x + 0.5f - offset.x));
@@ -116,6 +121,8 @@ GridPos Map::get_grid_position(const glm::vec2& worldPos) const
   return GridPos{ row, col };
 }
 
+
+//Generates an empty map and returns it
 Map GenerateEmptyMap(unsigned xSize, unsigned ySize)
 {
   Map map(xSize, ySize);
@@ -126,8 +133,8 @@ Map GenerateEmptyMap(unsigned xSize, unsigned ySize)
   {
     for (unsigned j = 0; j < map.data[i].size(); ++j)
     {
-      map.data[i][j].type = mntGround;
-      map.data[i][j].GetComponent<Transform>()->SetScale({1.0f, 1.0f});
+      map.data[i][j].type = MapNodeTypes::Ground;
+      map.data[i][j].GetComponent<Transform>()->SetScale({ 0.5f, 0.5f});
       std::string grass = "grass";
       grass += std::to_string(RandomValue(0, 2));
       map.data[i][j].GetComponent<Sprite>()->SetTexure(grass);
@@ -137,5 +144,51 @@ Map GenerateEmptyMap(unsigned xSize, unsigned ySize)
   }
   return map;
 }
+
+
+//Generates a maze overwriting a map using a method
+void Map::GenerateMaze(MazeGenerationMethod method)
+{
+
+  /*
+    Start with a grid full of walls.
+    Pick a cell, mark it as part of the maze. Add the walls of the cell to the wall list.
+    While there are walls in the list:
+      Pick a random wall from the list. If only one of the two cells that the wall divides is visited, then:
+        Make the wall a passage and mark the unvisited cell as part of the maze.
+        Add the neighboring walls of the cell to the wall list.
+      Remove the wall from the list.
+   */
+  if(method == MazeGenerationMethod::RandomizedPrims)
+  {
+    /*
+    Start with a grid full of walls.
+    Pick a cell, mark it as part of the maze. Add the walls of the cell to the wall list.
+    While there are walls in the list:
+      Pick a random wall from the list. If only one of the two cells that the wall divides is visited, then:
+        Make the wall a passage and mark the unvisited cell as part of the maze.
+        Add the neighboring walls of the cell to the wall list.
+      Remove the wall from the list.
+   */
+    //Create a grid full of walls
+    for (unsigned i = 0; i < data.size(); ++i)
+    {
+      for (unsigned j = 0; j < data[i].size(); ++j)
+      {
+        if(i == 0 || j == 0 || i == data.size() - 1 || j == data[i].size() - 1)
+        {
+          //Mak
+          data[i][j].type = MapNodeTypes::Object;
+          data[i][j].GetComponent<Transform>()->SetScale({ 0.5f, 0.5f });
+          data[i][j].GetComponent<Sprite>()->SetTexure("Wall1");
+          data[i][j].GetComponent<Transform>()->SetTranslation({ i, j });
+          data[i][j].SetLayer(GameObjectLayer::Obstacles);
+        }
+      }
+    }
+  }
+
+}
+
 
 

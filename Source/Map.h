@@ -22,12 +22,18 @@ struct GridPos
   }
 };
 
-enum MapNodeTypes
+enum class MapNodeTypes : unsigned
 {
-  mntGround,
-  mntObject,  //resource or building, something that stops movement
-  mntWater,
-  mntOutOfBounds
+  Ground = 0,
+  Object = 1,  //resource or building, something that stops movement
+  Water,
+  OutOfBounds
+};
+
+enum class MazeGenerationMethod
+{
+  RandomizedPrims,
+
 };
 
 class MapNode : public GameObject
@@ -41,7 +47,7 @@ public:
     *this = rhs;
     type = rhs.type;
   }
-  unsigned type = mntOutOfBounds;
+  MapNodeTypes type = MapNodeTypes::OutOfBounds;
   GameObject* modifier = nullptr;
   //could be game obj ptr
   //glm::uvec2 pos;
@@ -53,11 +59,17 @@ public:
   Map(unsigned xSize, unsigned ySize);
   Map(std::string& file_string);
 
+  void SaveMap(Map &map);
+
+  void GenerateMaze(MazeGenerationMethod method);
+
   void setOffset(glm::vec2 pos)
   {
     setOffset(pos.x, pos.y);
   }
-  
+
+  //Create an Iterate Over Every Grid func that passes a func over every 
+  //grid pos and gives the func the x,y, grid space of the current position
   void setOffset(float x, float y)
   {
     offset.x = x;
@@ -74,7 +86,6 @@ public:
 
   GridPos get_grid_position(const glm::vec2 &worldPos) const;
 
-  void SaveMap(Map &map);
 
   bool is_valid_grid_position(int row, int col) const
   {
@@ -95,6 +106,8 @@ public:
   {
     return data[x][y];
   }
+
+
   std::string name = "MapName";
   std::vector<std::vector<MapNode>> data;
   std::map<Need, std::vector<GameObject*>> objects;
@@ -106,4 +119,5 @@ public:
 };
 
 Map GenerateEmptyMap(unsigned xSize, unsigned ySize);
+
 #endif

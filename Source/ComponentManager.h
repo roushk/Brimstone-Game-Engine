@@ -21,7 +21,7 @@
 #include <queue>
 #include "UtilityAi.h"
 
-#define MAXOBJECTS 60000
+#define MAXOBJECTS 200000
 #define UNREFERENCED_PARAMETER(P) (P)
 
 

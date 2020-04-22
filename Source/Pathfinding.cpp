@@ -48,7 +48,7 @@ void AStarPather::precalcMap(Map* mapData)
         node.onList = olUncheckedNode;
         
 
-        if (mapData->getNode(y, x).type == mntObject)
+        if (mapData->getNode(y, x).type == MapNodeTypes::Object)
           node.onList = olWallNode;
 
         mapSubVec.push_back(node);
