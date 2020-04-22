@@ -21,8 +21,7 @@
 #include <queue>
 #include "UtilityAi.h"
 
-#define MAXOBJECTS 1000600
-#define MAXOBJECTS_MIN 10000
+#define MAXOBJECTS 100000
 
 #define UNREFERENCED_PARAMETER(P) (P)
 
@@ -38,19 +37,11 @@ public:
 
     for (unsigned i = 0; i < ctOutOfBounds; ++i)
     {
-      if (i == ctAI || i == ctParticleManager ||
-        i == ctUtilityAI || i == ctBasicBehavior || 
-        i == ctPhysics)
-      {
-        components[i].resize(MAXOBJECTS_MIN);
-        //availibleComponents[i].resize(MAXOBJECTS_MIN);
-      }
-      else
-      {
-        components[i].resize(MAXOBJECTS);
-      }
 
-        availibleComponents[i].resize(MAXOBJECTS);
+      components[i].resize(MAXOBJECTS);
+    
+
+      availibleComponents[i].resize(MAXOBJECTS);
 
       for (unsigned j = 0; j < MAXOBJECTS; ++j)
       {
@@ -59,17 +50,17 @@ public:
           components[i][j] = new Sprite;          
         if (i == ctTransform)
           components[i][j] = new Transform;
-        if (i == ctPhysics && j < MAXOBJECTS_MIN)
+        if (i == ctPhysics)
           components[i][j] = new Physics;
-        if (i == ctBasicBehavior && j < MAXOBJECTS_MIN)
+        if (i == ctBasicBehavior)
           components[i][j] = new BasicBehavior;
         if (i == ctCollider)
           components[i][j] = new Collider;
-        if (i == ctAI && j < MAXOBJECTS_MIN)
+        if (i == ctAI)
           components[i][j] = new AI;
-        if (i == ctUtilityAI && j < MAXOBJECTS_MIN)
+        if (i == ctUtilityAI)
           components[i][j] = new UtilityAI;
-        if (i == ctParticleManager && j < MAXOBJECTS_MIN)
+        if (i == ctParticleManager)
           components[i][j] = new ParticleManager;
       }
     }
