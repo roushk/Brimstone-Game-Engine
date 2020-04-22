@@ -158,18 +158,18 @@ void Map::GenerateMaze(MazeGenerationMethod method)
   std::vector<std::vector<PrimsNode>> primsMap;
   
   primsMap.reserve(data.size());
-  std::vector<MapNode> nodes;
+  std::vector<PrimsNode> nodes;
   for (unsigned i = 0; i < data.size(); ++i)
   {
-    MapNode node;
+    PrimsNode node;
     nodes.push_back(node);
   }
 
-  nodes.reserve(xSize);
+  nodes.reserve(data.size());
 
-  for (unsigned i = 0; i < ySize; ++i)
+  for (unsigned i = 0; i < data[0].size(); ++i)
   {
-    data.push_back(nodes);
+    primsMap.push_back(nodes);
   }
   
   
@@ -195,49 +195,81 @@ void Map::GenerateMaze(MazeGenerationMethod method)
    */
 
     //Start with a grid full of walls
-    for (unsigned i = 0; i < data.size(); ++i)
+    for (unsigned i = 0; i < primsMap.size(); ++i)
     {
-      for (unsigned j = 0; j < data[i].size(); ++j)
+      for (unsigned j = 0; j < primsMap[0].size(); ++j)
       {
+        primsMap[i][j].type = PrimsNodeType::Unchecked;
+        primsMap[i][j].x = i;
+        primsMap[i][j].y = j;
+
+      }
+    }
+
+    /*
+     Set to Wall
         data[i][j].type = MapNodeTypes::Object;
         data[i][j].GetComponent<Transform>()->SetScale({ 0.5f, 0.5f });
         data[i][j].GetComponent<Sprite>()->SetTexure("Wall1");
         data[i][j].GetComponent<Transform>()->SetTranslation({ i, j });
         data[i][j].SetLayer(GameObjectLayer::Obstacles);
-      
-      }
-    }
 
+
+      Set to Ground
+        data[i][j].type = MapNodeTypes::Ground;
+        data[i][j].GetComponent<Transform>()->SetScale({ 0.5f, 0.5f });
+        data[i][j].GetComponent<Sprite>()->SetTexure("grass1");
+        data[i][j].SetLayer(GameObjectLayer::Floor);
+     */
     //pick a cell, were going to make sure the path starts at 1,1
-    data[1][1].type = MapNodeTypes::Ground;
-    data[1][1].GetComponent<Transform>()->SetScale({ 0.5f, 0.5f });
-    data[1][1].GetComponent<Sprite>()->SetTexure("grass1");
-    data[1][1].SetLayer(GameObjectLayer::Floor);
+
 
     //The walls list is going to be a pair of ints representing the coordinates of the wall in the map
     std::vector<NodeCoord> wallList;
     std::vector<NodeCoord> mazeList;
     std::vector<NodeCoord> visited;
 
+
+    primsMap[1][1].type = PrimsNodeType::Floor;
+
     //Pick a cell, mark it as part of the maze
     mazeList.push_back({ 1,1 });
 
     //Add the walls of the cell to the wall list.
-    AppendVector(wallList, GetAdjacent({ 1,1 }));
+    AppendVector(wallList, GetAdjacentWalls({ 1,1 }));
 
-    //
+    //adding wall list to the visited list
     AppendVector(visited, wallList);
+
+    //adding maze list to the visited list
     AppendVector(visited, mazeList);
+
+    for(auto& val: visited)
+    {
+      primsMap[val.first][val.second].visited = true;
+    }
+    for (auto& val : wallList)
+    {
+      primsMap[val.first][val.second].type = PrimsNodeType::Wall;
+    }
+    for (auto& val : mazeList)
+    {
+      primsMap[val.first][val.second].type = PrimsNodeType::Floor;
+    }
 
     //While there are walls in the list:
     while(!wallList.empty())
     {
+      
       //Pick a random wall from the list.
       int randValue = RandomValue(0, wallList.size() - 1);
       auto& node = wallList[randValue];
-      auto adjacent = GetAdjacent(node);
+      auto adjacent = GetAdjacentWalls(node);
       int adjacentVisited = 0;
 
+      primsMap[node.first][node.second].visited = true;
+
+      //get the number of adjacent visited
       for(auto& value: adjacent)
       {
         //search from the beginning to end of visited nodes and if its visited
@@ -245,35 +277,51 @@ void Map::GenerateMaze(MazeGenerationMethod method)
 
         //Definitely can rewrite this to loop through visited once and then check if one of the
         //adjacent values
-        if (std::find(visited.begin(), visited.end(), value) != visited.end())
+        if (primsMap[value.first][value.second].visited == true)
         {
           adjacentVisited++;
         }
       }
 
       //If only one of the two cells that the wall divides is visited, then
-      if(adjacentVisited < 2)
+      if(adjacentVisited == 1)
       {
         /*
           Make the wall a passage and mark the unvisited cell as part of the maze.
           Add the neighboring walls of the cell to the wall list.
         */
+        //Make the wall a passage
+        primsMap[node.first][node.second].type = PrimsNodeType::Floor;
 
-        data[node.first][node.second].type = MapNodeTypes::Ground;
-        data[node.first][node.second].GetComponent<Transform>()->SetScale({ 0.5f, 0.5f });
-        data[node.first][node.second].GetComponent<Sprite>()->SetTexure("grass1");
-        data[node.first][node.second].SetLayer(GameObjectLayer::Floor);
-        AppendVector(wallList, GetAdjacent(node));
+        //mark the unvisited cell as part of the maze.
+        mazeList.push_back({ node.first,node.second });
+
+        std::sort(mazeList.begin(), mazeList.end());
+        mazeList.erase(unique(mazeList.begin(), mazeList.end()), mazeList.end());
+        //Add the neighboring walls of the cell to the wall list.
+        auto values = GetAdjacent(node);
+        for(auto& val: values)
+        {
+          if(primsMap[val.first][val.second].visited == false)
+          {
+            primsMap[val.first][val.second].type = PrimsNodeType::Wall;
+            wallList.push_back(val);
+            //primsMap[val.first][val.second].visited = true;
+          }
+        }
+
 
       }
-      
-        //From the perspective of the wall it has 1 adjacent node that is a cell
-        //It also has 3 other cells that are unvisited
+      //Remove the wall from the list
+      wallList.erase(wallList.begin() + randValue);
 
-        //if numVisited 
-
+      //Make unique
+      //std::sort(wallList.begin(), wallList.end());
+      //wallList.erase(unique(wallList.begin(), wallList.end()), wallList.end());
       
     }
+    //set walls to wall
+    /*
 
     for (unsigned i = 0; i < data.size(); ++i)
     {
@@ -290,10 +338,31 @@ void Map::GenerateMaze(MazeGenerationMethod method)
         }
       }
     }
+    */
+    for (unsigned i = 0; i < primsMap.size(); ++i)
+    {
+      for (unsigned j = 0; j < primsMap[0].size(); ++j)
+      {
+        data[i][j].GetComponent<Transform>()->SetScale({ 0.5f, 0.5f });
+        data[i][j].GetComponent<Transform>()->SetTranslation({ i, j });
 
-
+        if(primsMap[i][j].type == PrimsNodeType::Wall)
+        {
+          data[i][j].type = MapNodeTypes::Object;
+          data[i][j].GetComponent<Sprite>()->SetTexure("Wall1");
+          data[i][j].SetLayer(GameObjectLayer::Obstacles); 
+        }
+        else if (primsMap[i][j].type == PrimsNodeType::Floor)
+        {
+          data[i][j].type = MapNodeTypes::Ground;
+          std::string grass = "grass";
+          grass += std::to_string(RandomValue(0, 2));
+          data[i][j].GetComponent<Sprite>()->SetTexure(grass);
+          data[i][j].SetLayer(GameObjectLayer::Floor);
+        }
+      }
+    }
   }
-
 }
 
 

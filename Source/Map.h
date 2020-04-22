@@ -5,12 +5,19 @@
 #include <vector>
 #include <glm.hpp>
 #include "GameObject.h"
-
+#include <set>
 
 
 //TODO move this to a Vector Tools .h file
 template <typename T>
 void AppendVector(std::vector<T>& toAppendTo, const std::vector<T>& toAppendFrom)
+{
+  toAppendTo.insert(toAppendTo.end(), toAppendFrom.begin(), toAppendFrom.end());
+
+}
+
+template <typename T>
+void AppendSet(std::set<T>& toAppendTo, const std::vector<T>& toAppendFrom)
 {
   toAppendTo.insert(toAppendTo.end(), toAppendFrom.begin(), toAppendFrom.end());
 
@@ -77,10 +84,11 @@ enum class PrimsNodeType
 
 class PrimsNode
 {
-  
+public:
   int x = 0;
   int y = 0;
   PrimsNodeType type = PrimsNodeType::Unchecked;
+  bool visited = false;
 
 };
 
