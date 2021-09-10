@@ -22,7 +22,7 @@ void Node::calcHeuristic(const GridPos& goal)
   //assuming for GridPos row = x and col = y
   xDiff = abs(goal.row - x);
   yDiff = abs(goal.col - y);
-  heuristic = std::min(xDiff,yDiff) * sqrt(2.0f)
+  heuristic = std::min(xDiff,yDiff) * SQRT2ASTAR
     + std::max(xDiff, yDiff) - std::min(xDiff, yDiff);
 
 }
