@@ -27,7 +27,7 @@ void AssetManager::LoadInitial()
   std::string fileName = "./Art/DDS/BlankTexture.DDS";
 
   Texture * texture = new Texture(fileName);
-  textures._Insert_or_assign("BlankTexture", texture);
+  textures.insert_or_assign("BlankTexture", texture);
   
   BlankTextureID = texture->ID;
 
@@ -48,7 +48,7 @@ void AssetManager::LoadSingleTexture(std::string fileName)
   textureName.erase(textureName.find_last_of('.'), 4);
 
   std::cout << "Loading singleton texture |" << textureName << "|" << std::endl;
-  textures._Insert_or_assign(textureName, texture);
+  textures.insert_or_assign(textureName, texture);
 
   BlankTextureID = texture->ID;
 
@@ -119,7 +119,7 @@ void AssetManager::LoadSprites()
     fileName += spriteString.at(i);
 
     Texture * sprite = new Texture(fileName);
-    textures._Insert_or_assign(nameTitle, sprite);
+    textures.insert_or_assign(nameTitle, sprite);
     texturesBasedOnIDs.push_back(sprite);
     std::vector<GameObject*> objectVector;
     objectTextures.push_back(objectVector);
