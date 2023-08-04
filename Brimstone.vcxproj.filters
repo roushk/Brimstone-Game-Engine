@@ -245,9 +245,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\2.5D Engine.cpp">
-      <Filter>Source Files\Main</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Engine.cpp">
       <Filter>Source Files\Main\Engine</Filter>
     </ClCompile>
@@ -343,6 +340,9 @@
     </ClCompile>
     <ClCompile Include="Source\PointContainment2D.cpp">
       <Filter>Source Files\Systems\Collision Detection</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BrimstoneMain.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -149,6 +149,7 @@ private:
     parent = &parent_;
 
   }
+
   std::map<unsigned, GameObject*> children;
   GameObject* parent = nullptr;
   static unsigned NextGameObjectID;

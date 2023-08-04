@@ -24,7 +24,7 @@ Window::Window()
   }
   else
   {
-    std::string programName = "2DEngine";
+    std::string programName = "BrimstoneGE";
     int screenWidth = 800;
     int screenHeight = 600;
 

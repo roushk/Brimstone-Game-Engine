@@ -125,7 +125,6 @@ void Render::Update(const float dt)
           }
         }
       }
-      
     }
   }
 
